@@ -484,29 +484,61 @@ body.editing .canvas-resize{ display:block; }
 
 .app-shell{ max-width:1400px; margin:0 auto; display:flex; align-items:flex-start; }
 
+/* --header-h is kept in sync with the real header height by a ResizeObserver
+   (see syncHeaderHeight) — the header wraps to two or three lines on narrow
+   screens, so a hard-coded offset leaves the rails tucked underneath it. */
 .sidebar{
-  flex:0 0 264px; width:264px; position:sticky; top:65px; height:calc(100vh - 65px);
+  flex:0 0 var(--sidebar-w, 264px); width:var(--sidebar-w, 264px);
+  position:sticky; top:var(--header-h, 108px); height:calc(100vh - var(--header-h, 108px));
   background:var(--paper-tint); border-right:1px solid var(--line);
-  transition:width .22s ease; overflow:hidden; z-index:30;
+  overflow:visible; z-index:30;
 }
 .sidebar.collapsed{ flex-basis:60px; width:60px; }
-.sidebar-scroll{ height:100%; overflow-y:auto; overflow-x:hidden; padding:16px 10px 24px; }
+.sidebar:not(.is-resizing){ transition:flex-basis .22s ease, width .22s ease; }
+.sidebar-scroll{ height:100%; overflow-y:auto; overflow-x:hidden; padding:12px 10px 24px; }
+
+/* The collapse control sits in the flow on the same row as the section label,
+   so the two share a baseline and the button's right edge lines up with the
+   nav rows' right edge instead of overhanging them. */
+.sidebar-head{ display:flex; align-items:center; gap:8px; padding:4px 0 10px; }
 .sidebar-collapse-btn{
-  position:absolute; top:10px; right:8px; width:26px; height:26px; border-radius:7px;
+  flex:none; width:28px; height:28px; margin-inline-start:auto; border-radius:8px;
   background:#fff; border:1px solid var(--line); color:var(--powder-blue); cursor:pointer;
-  display:flex; align-items:center; justify-content:center; z-index:2;
+  display:flex; align-items:center; justify-content:center;
 }
-.sidebar-collapse-btn:hover{ border-color:var(--sky-blue); }
+.sidebar-collapse-btn:hover{ border-color:var(--sky-blue); color:var(--dark-blue); }
 .sidebar-collapse-btn svg{ width:14px; height:14px; transition:transform .22s ease; }
 .sidebar.collapsed .sidebar-collapse-btn svg{ transform:rotate(180deg); }
-.sidebar.collapsed .sidebar-collapse-btn{ right:50%; transform:translateX(50%); top:6px; }
-.sidebar.collapsed .sidebar-scroll{ padding-top:44px; }
+.sidebar.collapsed .sidebar-head{ justify-content:center; padding:4px 0 10px; }
+.sidebar.collapsed .sidebar-collapse-btn{ margin-inline-start:0; }
 
 .sidebar-section-label{
   font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--powder-blue); padding:6px 10px 12px; margin-top:2px;
+  color:var(--powder-blue); padding:0 0 0 10px; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
+.sidebar-section-label[lang="ar"]{ font-family:var(--ff-ar); letter-spacing:0; text-transform:none; font-size:12px; }
 .sidebar.collapsed .sidebar-section-label{ display:none; }
+
+/* Drag handles for the two rails. They sit on the rail edge, widen on hover,
+   and are keyboard-adjustable with the arrow keys. */
+.sidebar-resizer, .toc-resizer{
+  position:absolute; top:0; bottom:0; width:9px; cursor:col-resize; z-index:31;
+  background:transparent; border:0; padding:0;
+}
+.sidebar-resizer{ right:-4px; }
+.toc-resizer{ left:-4px; }
+.sidebar-resizer::after, .toc-resizer::after{
+  content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; transform:translateX(-50%);
+  background:transparent; transition:background .15s ease;
+}
+.sidebar-resizer:hover::after, .toc-resizer:hover::after,
+.sidebar-resizer:focus-visible::after, .toc-resizer:focus-visible::after,
+.sidebar-resizer.dragging::after, .toc-resizer.dragging::after{ background:var(--green-sage); }
+.sidebar-resizer:focus-visible, .toc-resizer:focus-visible{ outline:2px solid var(--green-sage); outline-offset:-2px; }
+.sidebar.collapsed .sidebar-resizer{ display:none; }
+body.is-resizing{ cursor:col-resize; user-select:none; }
+@media (max-width:1180px){ .sidebar-resizer{ display:none; } }
 
 .sidebar-nav{ display:flex; flex-direction:column; gap:2px; }
 
@@ -520,6 +552,13 @@ body.editing .canvas-resize{ display:block; }
 .nav-row.active{ background:var(--dark-blue); color:#fff; }
 .nav-row .ic{ width:17px; height:17px; flex:none; }
 .nav-row-label{ flex:1; overflow:hidden; text-overflow:ellipsis; }
+/* dir="rtl" is set on Arabic labels so the text shapes correctly, but the
+   shell stays LTR with the icon on the left — so keep the label butted up
+   against its icon rather than pushed to the far edge of the row. */
+.nav-row-label[dir="rtl"]{ text-align:left; }
+.nav-row-label[lang="ar"]{ font-family:var(--ff-ar); }
+.nav-group-label[dir="rtl"]{ text-align:left; }
+.nav-group-label[lang="ar"]{ font-family:var(--ff-ar); }
 .nav-row-del{ opacity:.55; font-size:11.5px; flex:none; padding:2px 4px; border-radius:5px; }
 .nav-row-del:hover{ opacity:1; background:rgba(182,84,84,0.18); }
 .nav-row.active .nav-row-del{ color:#fff; }
@@ -656,8 +695,9 @@ section.block.tinted .section-head{ background:var(--paper-tint); }
 
 /* ================= Floating Table of Contents ================= */
 .page-toc{
-  position:sticky; top:80px; align-self:start; width:190px; flex:none;
-  max-height:calc(100vh - 100px); overflow-y:auto; padding:4px 0 20px 18px;
+  position:sticky; top:calc(var(--header-h, 108px) + 16px); align-self:start;
+  width:var(--toc-w, 190px); flex:none;
+  max-height:calc(100vh - var(--header-h, 108px) - 36px); overflow-y:auto; padding:4px 0 20px 18px;
   border-left:1px solid var(--line); display:none;
 }
 .page-toc.show{ display:block; }
@@ -896,18 +936,22 @@ img[data-rk]{ height:auto; }
 
 <div class="app-shell">
   <aside class="sidebar" id="sidebar">
-    <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Collapse navigation">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>
-    </button>
     <div class="sidebar-scroll">
-      <div class="sidebar-section-label">Knowledge Base</div>
+      <div class="sidebar-head">
+        <div class="sidebar-section-label">Knowledge Base</div>
+        <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Collapse navigation" aria-label="Collapse navigation" aria-expanded="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+      </div>
       <nav class="sidebar-nav" id="sidebar-nav"></nav>
       <div class="sidebar-add-zone" id="sidebar-add-zone"></div>
     </div>
+    <div class="sidebar-resizer" id="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize navigation" tabindex="0"></div>
   </aside>
   <div class="content-with-toc">
     <main class="content content-main" id="page-content"></main>
     <aside class="page-toc" id="page-toc">
+      <div class="toc-resizer" id="toc-resizer" role="separator" aria-orientation="vertical" aria-label="Resize page outline" tabindex="0"></div>
       <div class="toc-label">On this page</div>
       <nav id="page-toc-nav"></nav>
     </aside>
@@ -1463,6 +1507,101 @@ function t(key){
   return s ? (s[chromeLang()] || s.en) : '';
 }
 
+/* ---------------- Layout preferences (per viewer) ----------------
+   Rail widths and the measured header height. Widths are a personal display
+   preference like the language mode, so they live in their own localStorage
+   key rather than in siteData. */
+const LAYOUT_KEY = 'sanadKB_layout_v1';
+const SIDEBAR_MIN = 200, SIDEBAR_MAX = 420, SIDEBAR_DEFAULT = 264;
+const TOC_MIN = 160, TOC_MAX = 360, TOC_DEFAULT = 190;
+
+function clamp(v, lo, hi){ return Math.min(hi, Math.max(lo, v)); }
+function readLayout(){
+  try{ return JSON.parse(localStorage.getItem(LAYOUT_KEY) || '{}') || {}; }catch(e){ return {}; }
+}
+function writeLayout(next){
+  try{ localStorage.setItem(LAYOUT_KEY, JSON.stringify(next)); }catch(e){}
+}
+function applyLayout(){
+  const l = readLayout();
+  const sw = clamp(Number(l.sidebarW) || SIDEBAR_DEFAULT, SIDEBAR_MIN, SIDEBAR_MAX);
+  const tw = clamp(Number(l.tocW) || TOC_DEFAULT, TOC_MIN, TOC_MAX);
+  document.documentElement.style.setProperty('--sidebar-w', sw+'px');
+  document.documentElement.style.setProperty('--toc-w', tw+'px');
+}
+function setRailWidth(which, px){
+  const l = readLayout();
+  if(which==='sidebar') l.sidebarW = clamp(Math.round(px), SIDEBAR_MIN, SIDEBAR_MAX);
+  else l.tocW = clamp(Math.round(px), TOC_MIN, TOC_MAX);
+  writeLayout(l);
+  applyLayout();
+}
+function currentRailWidth(which){
+  const el2 = document.getElementById(which==='sidebar' ? 'sidebar' : 'page-toc');
+  return el2 ? el2.getBoundingClientRect().width : (which==='sidebar'?SIDEBAR_DEFAULT:TOC_DEFAULT);
+}
+
+/* The header wraps to two or three lines on narrow screens, so its height is
+   measured rather than assumed; both sticky rails hang off --header-h. */
+function syncHeaderHeight(){
+  const h = document.querySelector('.site-header');
+  if(!h) return;
+  document.documentElement.style.setProperty('--header-h', Math.round(h.getBoundingClientRect().height)+'px');
+}
+
+function wireRailResizers(){
+  const setup = (handleId, which, dirSign)=>{
+    const handle = document.getElementById(handleId);
+    if(!handle) return;
+    let startX = 0, startW = 0, dragging = false;
+
+    const onMove = (e)=>{
+      if(!dragging) return;
+      const x = (e.touches ? e.touches[0].clientX : e.clientX);
+      setRailWidth(which, startW + (x - startX) * dirSign);
+    };
+    const onUp = ()=>{
+      if(!dragging) return;
+      dragging = false;
+      handle.classList.remove('dragging');
+      document.body.classList.remove('is-resizing');
+      document.getElementById('sidebar').classList.remove('is-resizing');
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
+    };
+    const onDown = (e)=>{
+      dragging = true;
+      startX = (e.touches ? e.touches[0].clientX : e.clientX);
+      startW = currentRailWidth(which);
+      handle.classList.add('dragging');
+      document.body.classList.add('is-resizing');
+      // Suppress the width transition while dragging so the rail tracks the cursor.
+      document.getElementById('sidebar').classList.add('is-resizing');
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+      window.addEventListener('touchmove', onMove, {passive:true});
+      window.addEventListener('touchend', onUp);
+      e.preventDefault();
+    };
+    handle.addEventListener('mousedown', onDown);
+    handle.addEventListener('touchstart', onDown, {passive:false});
+    handle.addEventListener('dblclick', ()=>{
+      setRailWidth(which, which==='sidebar' ? SIDEBAR_DEFAULT : TOC_DEFAULT);
+    });
+    handle.addEventListener('keydown', (e)=>{
+      const step = e.shiftKey ? 32 : 8;
+      if(e.key==='ArrowLeft'){ setRailWidth(which, currentRailWidth(which) - step*dirSign); e.preventDefault(); }
+      else if(e.key==='ArrowRight'){ setRailWidth(which, currentRailWidth(which) + step*dirSign); e.preventDefault(); }
+      else if(e.key==='Home'){ setRailWidth(which, which==='sidebar' ? SIDEBAR_DEFAULT : TOC_DEFAULT); e.preventDefault(); }
+    });
+  };
+  // Dragging the left rail's handle rightwards widens it; the right rail is mirrored.
+  setup('sidebar-resizer', 'sidebar', 1);
+  setup('toc-resizer', 'toc', -1);
+}
+
 /* Picks a page's label for the current chrome language, falling back to the
    other language when one side is blank (brand names like "Lynx" are stored
    only once and are meant to read the same either way). */
@@ -1706,6 +1845,13 @@ function renderSidebar(){
 function toggleSidebarCollapse(){
   sidebarCollapsed = !sidebarCollapsed;
   document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+  const btn = document.getElementById('sidebar-collapse-btn');
+  if(btn){
+    btn.setAttribute('aria-expanded', String(!sidebarCollapsed));
+    const label = sidebarCollapsed ? 'Expand navigation' : 'Collapse navigation';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
 }
 function toggleMobileSidebar(){
   sidebarMobileOpen = !sidebarMobileOpen;
@@ -2596,7 +2742,9 @@ function renderBlockInner(block){
       groups[cat].push(ii);
     });
 
-    if(accordionOpenState[block.id]==null) accordionOpenState[block.id] = order[0]||null;
+    // Every category starts collapsed — no group is forced open. The search
+    // filter below opens matching groups while a query is active and restores
+    // this state (i.e. all closed) when the query is cleared.
 
     const accWrap = el('div',{class:'term-accordion'});
     const groupEls = {};
@@ -3398,6 +3546,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
   document.querySelectorAll('#lang-toggle [data-lang-mode]').forEach(btn=>{
     btn.addEventListener('click', ()=>setLangMode(btn.getAttribute('data-lang-mode')));
   });
+
+  applyLayout();
+  wireRailResizers();
+  syncHeaderHeight();
+  if(window.ResizeObserver){
+    new ResizeObserver(syncHeaderHeight).observe(document.querySelector('.site-header'));
+  }
+  window.addEventListener('resize', syncHeaderHeight);
 
   document.querySelectorAll('.nav-card').forEach(()=>{}); // handled in renderRail
 
