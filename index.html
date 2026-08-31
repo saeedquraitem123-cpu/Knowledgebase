@@ -316,6 +316,20 @@ body.editing .edit-only{display:inline-flex;}
 
 @media (max-width:900px){ .site-search{ display:none; } }
 
+.lang-toggle{display:flex;align-items:center;background:rgba(255,255,255,0.1);border-radius:999px;padding:3px;gap:2px;flex:none;margin-inline-end:14px;}
+.lt-btn{border:none;background:transparent;color:rgba(255,255,255,0.65);font-family:var(--ff-en);font-size:11px;font-weight:700;letter-spacing:.03em;padding:6px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;}
+.lt-btn:hover{color:#fff;}
+.lt-btn.active{background:var(--green-sage);color:var(--dark-blue);}
+@media (max-width:760px){ .lang-toggle{ display:none; } }
+
+/* Per-viewer display preference (not site content): hides one language's
+   fields within the rendered page content, tagged throughout the block
+   renderers with lang="en" / lang="ar". Scoped to main.content only — admin
+   UI like the Pages panel also uses lang="ar" on its own inputs and must
+   stay visible regardless of this reading preference. */
+body.lang-mode-en main.content [lang="ar"]{display:none !important;}
+body.lang-mode-ar main.content [lang="en"]{display:none !important;}
+
 /* ================= NHIS Structure diagram v2 ================= */
 .struct2{ display:flex; flex-direction:column; align-items:stretch; }
 .struct2-bar{
@@ -755,6 +769,7 @@ body.editing .struct3-card .struct2-variant-btn{ top:-8px; left:-8px; right:auto
 .users-panel.show{ display:flex; }
 .users-card{ background:#fff; border-radius:var(--radius); padding:26px; max-width:560px; width:92%; max-height:82vh; overflow:auto; box-shadow:var(--elev-3); }
 .users-card h3{ margin:0 0 16px; color:var(--dark-blue); }
+.users-security-note{ background:var(--paper-tint); border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px 14px; font-size:12.5px; line-height:1.55; color:var(--ink-soft); margin:-4px 0 16px; }
 .user-row{ display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--line); border-radius:var(--radius-sm); margin-bottom:8px; }
 .user-row input{ flex:1; min-width:0; border:1px solid var(--line); border-radius:6px; padding:7px 9px; font-size:13px; font-family:var(--ff-en); }
 .user-row select{ border:1px solid var(--line); border-radius:6px; padding:7px; font-size:12.5px; }
@@ -812,6 +827,22 @@ img[data-rk]{ height:auto; }
 .section-head{ pointer-events:none; }
 .section-head > *{ pointer-events:auto; }
 
+/* ---------------- Print ----------------
+   Agents print SOPs and call scripts; keep only the current page's content
+   and the footer's programme contact details, and drop everything that only
+   makes sense on screen (nav rails, TOC, search, editor chrome, toasts). */
+@media print{
+  .site-header, .sidebar, .page-toc, .edit-toolbar, .save-flash, .undo-toast,
+  .update-banner, .sidebar-backdrop, .field-toolbar, .rk-frame,
+  .sidebar-hamburger, #login-overlay, #users-panel, #pages-panel, #block-menu{
+    display:none !important;
+  }
+  .app-shell, .content-with-toc, main.content{ display:block !important; width:100% !important; margin:0 !important; padding:0 !important; }
+  body{ padding-bottom:0 !important; background:#fff !important; }
+  section.block{ box-shadow:none !important; border:1px solid #ccc !important; break-inside:avoid; }
+  .hero{ background:var(--dark-blue) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+
 </style>
 </head>
 <body>
@@ -832,6 +863,11 @@ img[data-rk]{ height:auto; }
       <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
       <input type="text" id="site-search-input" placeholder="Search the whole knowledge base…" autocomplete="off">
       <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language display">
+      <button class="lt-btn" data-lang-mode="en" title="Show English only">EN</button>
+      <button class="lt-btn" data-lang-mode="both" title="Show both languages">EN/AR</button>
+      <button class="lt-btn" data-lang-mode="ar" title="Show Arabic only">AR</button>
     </div>
     <div class="header-meta">
       <strong id="hdr-admin">Al Madallah Healthcare Management</strong>
@@ -1337,6 +1373,31 @@ function updateDirtyIndicator(){
   const dirty = isDirty();
   ind.classList.toggle('unsaved', dirty);
   ind.textContent = dirty ? 'Unsaved changes…' : 'All changes saved';
+}
+
+/* ---------------- Language display preference ----------------
+   Per-viewer reading preference (which language(s) show in the page
+   content), stored separately from siteData — this is not shared content,
+   so it belongs in localStorage under its own key, not in the exportable
+   site data. */
+const LANG_MODE_KEY = 'sanadKB_langMode_v1';
+function getLangMode(){
+  try{
+    const v = localStorage.getItem(LANG_MODE_KEY);
+    return (v==='en'||v==='ar') ? v : 'both';
+  }catch(e){ return 'both'; }
+}
+function setLangMode(mode){
+  try{ localStorage.setItem(LANG_MODE_KEY, mode); }catch(e){}
+  applyLangMode();
+}
+function applyLangMode(){
+  const mode = getLangMode();
+  document.body.classList.toggle('lang-mode-en', mode==='en');
+  document.body.classList.toggle('lang-mode-ar', mode==='ar');
+  document.querySelectorAll('#lang-toggle [data-lang-mode]').forEach(btn=>{
+    btn.classList.toggle('active', btn.getAttribute('data-lang-mode')===mode);
+  });
 }
 function startAutosave(){
   if(autosaveTimer) return;
@@ -1951,7 +2012,7 @@ function sectionHeadHtml(block){
   let inner = '';
   if(block.num) inner += '<span class="section-num">'+esc(block.num)+'</span>';
   inner += '<h2 class="section-title-ar" lang="ar" data-editable="1" data-bind="__HEADING_AR__">'+esc(block.heading_ar||'')+'</h2>';
-  inner += '<h2 class="section-title-en" data-editable="1" data-bind="__HEADING_EN__">'+esc(block.heading_en||'')+'</h2>';
+  inner += '<h2 class="section-title-en" lang="en" data-editable="1" data-bind="__HEADING_EN__">'+esc(block.heading_en||'')+'</h2>';
   inner += '<div class="divider-rule"></div>';
   head.innerHTML = inner;
   return head;
@@ -1986,7 +2047,7 @@ function renderBlockInner(block){
     box.appendChild(el('div',{class:'section-head'}, ''));
     const wrapH = box.querySelector('.section-head');
     wrapH.innerHTML =
-      '<h2 class="section-title-en" data-editable="1" data-bind="text_en">'+esc(block.text_en||'')+'</h2>'+
+      '<h2 class="section-title-en" lang="en" data-editable="1" data-bind="text_en">'+esc(block.text_en||'')+'</h2>'+
       '<h2 class="section-title-ar" lang="ar" data-editable="1" data-bind="text_ar">'+esc(block.text_ar||'')+'</h2>';
     wrapH.querySelectorAll('h2').forEach(h=>applyTextStyle(h, block, 'head'));
     return box;
@@ -2016,7 +2077,7 @@ function renderBlockInner(block){
         '</div>':'')+
         '<span class="qlink-icon">'+iconSvg(it.icon||'page')+'</span>'+
         '<div class="qlink-label" lang="ar" data-editable="1" data-bind="items.'+ii+'.label_ar">'+esc(it.label_ar||'')+'</div>'+
-        '<div class="qlink-label" data-editable="1" data-bind="items.'+ii+'.label_en">'+esc(it.label_en||'')+'</div>'+
+        '<div class="qlink-label" lang="en" data-editable="1" data-bind="items.'+ii+'.label_en">'+esc(it.label_en||'')+'</div>'+
         (editing?'<select class="qlink-target" data-qlink-target="'+ii+'">'+pageOpts+'</select>':'');
       if(editing){
         const sel = card.querySelector('select'); if(sel) sel.value = it.pageId||'home';
@@ -2138,7 +2199,7 @@ function renderBlockInner(block){
           '<button class="co-btn" data-obj-dup="'+oi+'" title="Duplicate">⧉</button>'+
           '<button class="co-btn danger" data-obj-del="'+oi+'" title="Delete">✕</button>'+
         '</div>' : '')+
-        '<div class="co-en" data-editable="1" data-bind="objects.'+oi+'.text_en">'+esc(obj.text_en||'')+'</div>'+
+        '<div class="co-en" lang="en" data-editable="1" data-bind="objects.'+oi+'.text_en">'+esc(obj.text_en||'')+'</div>'+
         (obj.text_ar!=null ? '<div class="co-ar" lang="ar" data-editable="1" data-bind="objects.'+oi+'.text_ar">'+esc(obj.text_ar||'')+'</div>' : '');
       if(editing){
         const handle = node.querySelector('[data-obj-drag]');
@@ -2197,7 +2258,7 @@ function renderBlockInner(block){
     const headHtml =
       (block.num?'<span class="section-num">'+esc(block.num)+'</span>':'')+
       '<h2 class="section-title-ar" lang="ar" data-editable="1" data-bind="heading_ar">'+esc(block.heading_ar||'')+'</h2>'+
-      '<h2 class="section-title-en" data-editable="1" data-bind="heading_en">'+esc(block.heading_en||'')+'</h2>'+
+      '<h2 class="section-title-en" lang="en" data-editable="1" data-bind="heading_en">'+esc(block.heading_en||'')+'</h2>'+
       '<div class="divider-rule"></div>';
     const bodyHtml =
       '<span class="lang-tag ar" lang="ar">AR</span>'+
@@ -2239,12 +2300,12 @@ function renderBlockInner(block){
         '<span class="struct3-step">'+(ti+1)+'</span>'+
         (editing?'<span class="struct2-variant-btn" data-toggle-bar="'+ti+'" title="Toggle colour">🎨</span>':'')+
         '<div class="struct3-title" lang="ar" data-editable="1" data-bind="tiers.'+ti+'.h_ar">'+esc(tier.h_ar)+'</div>'+
-        '<div class="struct3-title struct3-title-en" data-editable="1" data-bind="tiers.'+ti+'.h_en">'+esc(tier.h_en)+'</div>';
+        '<div class="struct3-title struct3-title-en" lang="en" data-editable="1" data-bind="tiers.'+ti+'.h_en">'+esc(tier.h_en)+'</div>';
 
       if(tier.d_ar || tier.d_en || editing){
         inner +=
           '<div class="struct3-desc" lang="ar" data-editable="1" data-multiline="1" data-bind="tiers.'+ti+'.d_ar">'+esc(tier.d_ar)+'</div>'+
-          '<div class="struct3-desc struct3-desc-en" data-editable="1" data-multiline="1" data-bind="tiers.'+ti+'.d_en">'+esc(tier.d_en)+'</div>';
+          '<div class="struct3-desc struct3-desc-en" lang="en" data-editable="1" data-multiline="1" data-bind="tiers.'+ti+'.d_en">'+esc(tier.d_en)+'</div>';
       }
       card.innerHTML = inner;
 
@@ -2313,11 +2374,11 @@ function renderBlockInner(block){
         '<div class="zz-dot" style="background:'+color+'"></div>'+
         '<div class="zz-card">'+
           '<div class="zz-date'+(dateEmpty_ar?' edit-only':'')+'" lang="ar" data-editable="1" data-bind="steps.'+si+'.date_ar" style="color:'+color+'">'+esc(s.date_ar||'+ تاريخ')+'</div>'+
-          '<div class="zz-date'+(dateEmpty_en?' edit-only':'')+'" data-editable="1" data-bind="steps.'+si+'.date_en" style="color:'+color+'">'+esc(s.date_en||'+ date')+'</div>'+
+          '<div class="zz-date'+(dateEmpty_en?' edit-only':'')+'" lang="en" data-editable="1" data-bind="steps.'+si+'.date_en" style="color:'+color+'">'+esc(s.date_en||'+ date')+'</div>'+
           '<div class="zz-title" lang="ar" data-editable="1" data-bind="steps.'+si+'.title_ar">'+esc(s.title_ar)+'</div>'+
-          '<div class="zz-title" data-editable="1" data-bind="steps.'+si+'.title_en">'+esc(s.title_en)+'</div>'+
+          '<div class="zz-title" lang="en" data-editable="1" data-bind="steps.'+si+'.title_en">'+esc(s.title_en)+'</div>'+
           '<div class="zz-desc" lang="ar" data-editable="1" data-multiline="1" data-bind="steps.'+si+'.desc_ar">'+esc(s.desc_ar)+'</div>'+
-          '<div class="zz-desc" data-editable="1" data-multiline="1" data-bind="steps.'+si+'.desc_en">'+esc(s.desc_en)+'</div>'+
+          '<div class="zz-desc" lang="en" data-editable="1" data-multiline="1" data-bind="steps.'+si+'.desc_en">'+esc(s.desc_en)+'</div>'+
           (editing?'<div class="zz-controls">'+
             '<button class="mini-btn" data-step-left="'+si+'" title="Move earlier"'+(si===0?' disabled':'')+'>↑</button>'+
             '<button class="mini-btn" data-step-right="'+si+'" title="Move later"'+(si===block.steps.length-1?' disabled':'')+'>↓</button>'+
@@ -2475,12 +2536,12 @@ function renderBlockInner(block){
           '<div class="no">'+
             '<span class="lbl" lang="ar" data-editable="1" data-bind="no_label_ar">'+esc(block.no_label_ar||'لا تستخدم')+'</span>'+
             (showAr?'<div class="tm-ar" lang="ar" data-editable="1" data-bind="items.'+ii+'.no_ar">'+esc(it.no_ar||'')+'</div>':'')+
-            (showEn?'<div class="tm-en" data-editable="1" data-bind="items.'+ii+'.no_en">'+esc(it.no_en||'')+'</div>':'')+
+            (showEn?'<div class="tm-en" lang="en" data-editable="1" data-bind="items.'+ii+'.no_en">'+esc(it.no_en||'')+'</div>':'')+
           '</div>'+
           '<div class="yes">'+
             '<span class="lbl" lang="ar" data-editable="1" data-bind="yes_label_ar">'+esc(block.yes_label_ar||'استخدم')+'</span>'+
             (showAr?'<div class="tm-ar" lang="ar" data-editable="1" data-bind="items.'+ii+'.yes_ar">'+esc(it.yes_ar||'')+'</div>':'')+
-            (showEn?'<div class="tm-en" data-editable="1" data-bind="items.'+ii+'.yes_en">'+esc(it.yes_en||'')+'</div>':'')+
+            (showEn?'<div class="tm-en" lang="en" data-editable="1" data-bind="items.'+ii+'.yes_en">'+esc(it.yes_en||'')+'</div>':'')+
           '</div>'+
           (editing?(
             '<span class="item-controls">'+
@@ -3233,6 +3294,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   document.getElementById('update-banner-load').addEventListener('click', loadLatestPublishedContent);
   document.getElementById('update-banner-dismiss').addEventListener('click', dismissUpdateBanner);
   document.getElementById('undo-toast-btn').addEventListener('click', performUndo);
+  applyLangMode();
+  document.querySelectorAll('#lang-toggle [data-lang-mode]').forEach(btn=>{
+    btn.addEventListener('click', ()=>setLangMode(btn.getAttribute('data-lang-mode')));
+  });
 
   document.querySelectorAll('.nav-card').forEach(()=>{}); // handled in renderRail
 
@@ -3704,6 +3769,7 @@ window.addEventListener('resize', ()=>{ if(rkSelected) positionRkFrame(); });
 <div class="users-panel" id="users-panel">
   <div class="users-card">
     <h3>Manage users</h3>
+    <p class="users-security-note">This sign-in separates Viewer/Editor/Admin roles and keeps most people from editing by accident — it runs entirely in this browser, so it is not a security boundary. Usernames and passwords are stored in plain text in this file and are readable by anyone who opens it. Do not reuse a real password here, and do not rely on this to keep content confidential.</p>
     <div id="users-list"></div>
     <button class="add-page-inline" id="users-add">+ Add user</button>
     <button class="close-panel" id="users-close">Done</button>
