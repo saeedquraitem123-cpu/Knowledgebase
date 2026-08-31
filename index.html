@@ -16,11 +16,54 @@
   --shadow:0 1px 2px rgba(23,49,76,0.06), 0 6px 20px rgba(23,49,76,0.07);
   --shadow-lift:0 10px 30px rgba(23,49,76,0.14);
   --ff-en:'Montserrat', sans-serif; --ff-ar:'Tajawal', sans-serif;
+
+  /* Deeper members of the two brand hues that fail AA as small text on a
+     light ground (sage 2.54:1, sky 2.66:1). Same families, legible weight —
+     used for small text and badges, never as a replacement for the originals
+     in their decorative roles. */
+  --sage-deep:#5A7561;   /* 5.06:1 with white, 4.85:1 on paper */
+  --sky-deep:#3F6E88;    /* 5.30:1 on paper */
+
+  /* Interaction: one state ladder so hover/press/focus read the same
+     everywhere instead of being re-invented per component. */
+  --state-hover:rgba(23,49,76,0.06);
+  --state-press:rgba(23,49,76,0.12);
+  --state-hover-invert:rgba(255,255,255,0.10);
+  --state-press-invert:rgba(255,255,255,0.18);
+  --focus-ring:0 0 0 3px rgba(140,165,148,0.55);
+
+  /* Elevation ladder — resting, raised, overlay. */
+  --elev-1:0 1px 2px rgba(23,49,76,0.06);
+  --elev-2:0 1px 2px rgba(23,49,76,0.06), 0 6px 20px rgba(23,49,76,0.07);
+  --elev-3:0 10px 30px rgba(23,49,76,0.14);
+
+  /* 4px spacing scale. */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px;
+
+  --dur-fast:120ms; --dur:200ms; --ease:cubic-bezier(0.2,0,0,1);
+}
+
+/* Keyboard users get a visible ring on every interactive element; mouse
+   users never see it. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible{
+  outline:none; box-shadow:var(--focus-ring); border-radius:var(--radius-sm);
+}
+@media (prefers-reduced-motion:reduce){
+  *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important; }
 }
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{margin:0;font-family:var(--ff-en);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;padding-bottom:70px;}
 [lang="ar"]{font-family:var(--ff-ar);direction:rtl;text-align:right;line-height:1.9;}
+/* An Arabic heading sitting hard-right above its left-aligned English
+   counterpart reads as two ragged columns. Inside a block the pair shares an
+   edge; RTL is preserved for shaping, only the alignment is matched. */
+.section-title-ar, .zz-title[lang="ar"], .zz-desc[lang="ar"], .zz-date[lang="ar"],
+.struct3-title[lang="ar"], .struct3-desc[lang="ar"], .qlink-label[lang="ar"]{ text-align:inherit; }
+.section-head{ text-align:left; }
+.align-center .section-head{ text-align:center; }
+.align-right .section-head{ text-align:right; }
 [lang="en"]{line-height:1.7;}
 a{color:inherit;}
 ::selection{background:var(--mint-green);color:var(--dark-blue);}
@@ -64,14 +107,17 @@ main.content{min-width:0; flex:1; padding:28px;}
 section.block{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 30px;box-shadow:var(--elev-1);}
 section.block.tinted{background:var(--paper-tint);}
 .section-head{margin-bottom:22px;}
-.section-num{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--green-sage);padding:4px 10px;border-radius:999px;margin-bottom:12px;}
+.section-num{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--sage-deep);padding:4px 10px;border-radius:999px;margin-bottom:12px;}
 .section-title-en{font-size:24px;font-weight:800;color:var(--dark-blue);margin:0 0 2px;}
 .section-title-ar{font-size:21px;font-weight:800;color:var(--dark-blue);margin:2px 0 0;}
 .divider-rule{height:3px;width:56px;background:var(--green-sage);border-radius:3px;margin:16px 0 22px;}
+/* The existing .align-* rules below already centre the rule; the right-aligned
+   case only set margin-left, leaving it stretched. */
+.align-right .divider-rule{ margin-right:0; }
 
 .prose-en{font-size:15.5px;color:var(--ink);max-width:78ch;}
 .prose-ar{font-size:16.5px;color:var(--ink);max-width:78ch;margin-top:16px;}
-.lang-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--powder-blue);background:var(--mint-green);padding:3px 9px;border-radius:6px;margin-bottom:10px;}
+.lang-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark-blue);background:var(--mint-green);padding:3px 9px;border-radius:6px;margin-bottom:10px;}
 .lang-tag.ar{font-family:var(--ff-en);}
 
 .structure{display:flex;flex-direction:column;align-items:stretch;gap:0;}
@@ -314,13 +360,21 @@ body.editing .edit-only{display:inline-flex;}
 .search-hit-item .sd-snippet mark{ background:var(--mint-green); color:var(--dark-blue); border-radius:2px; }
 [data-block-id].search-flash{ outline:3px solid var(--green-sage) !important; outline-offset:4px; }
 
-@media (max-width:900px){ .site-search{ display:none; } }
+/* Search and the language toggle used to disappear below 900px / 760px,
+   leaving phones with no way to search a knowledge base or change language.
+   They both stay — the header reflows to a second row instead. */
+@media (max-width:900px){
+  .site-search{ order:3; flex:1 1 100%; max-width:none; margin:10px 0 0; }
+}
 
 .lang-toggle{display:flex;align-items:center;background:rgba(255,255,255,0.1);border-radius:999px;padding:3px;gap:2px;flex:none;margin-inline-end:14px;}
 .lt-btn{border:none;background:transparent;color:rgba(255,255,255,0.65);font-family:var(--ff-en);font-size:11px;font-weight:700;letter-spacing:.03em;padding:6px 10px;border-radius:999px;cursor:pointer;white-space:nowrap;}
 .lt-btn:hover{color:#fff;}
 .lt-btn.active{background:var(--green-sage);color:var(--dark-blue);}
-@media (max-width:760px){ .lang-toggle{ display:none; } }
+.lt-btn:focus-visible{ color:#fff; }
+@media (max-width:900px){
+  .lang-toggle{ margin-inline-end:0; }
+}
 
 /* Per-viewer display preference (not site content): hides one language's
    fields within the rendered page content, tagged throughout the block
@@ -482,7 +536,16 @@ body.editing .canvas-resize{ display:block; }
 .sidebar-backdrop.show{ display:block; opacity:1; }
 @media (min-width:901px){ .sidebar-backdrop{ display:none !important; } }
 
+/* The rail's tint runs to the viewport edge so it reads as anchored to the
+   full-bleed header, rather than floating with a white strip beside it, while
+   the content column keeps its max-width. */
 .app-shell{ max-width:1400px; margin:0 auto; display:flex; align-items:flex-start; }
+@media (min-width:1441px){
+  .sidebar::before{
+    content:""; position:absolute; top:0; bottom:0; right:100%; width:calc((100vw - 1400px) / 2);
+    background:var(--paper-tint); border-right:0; pointer-events:none;
+  }
+}
 
 /* --header-h is kept in sync with the real header height by a ResizeObserver
    (see syncHeaderHeight) — the header wraps to two or three lines on narrow
@@ -548,8 +611,16 @@ body.is-resizing{ cursor:col-resize; user-select:none; }
   font-family:var(--ff-en); font-size:13.5px; font-weight:600; color:var(--ink);
   cursor:pointer; position:relative; white-space:nowrap;
 }
-.nav-row:hover{ background:var(--mint-green); }
+.nav-row{ transition:background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.nav-row:hover{ background:var(--state-hover); }
+.nav-row:active{ background:var(--state-press); }
 .nav-row.active{ background:var(--dark-blue); color:#fff; }
+.nav-row.active:hover{ background:var(--dark-blue); }
+/* Touch pointers get the 44px target the mouse doesn't need. */
+@media (pointer:coarse){
+  .nav-row{ padding-block:12px; min-height:44px; }
+  .lt-btn{ padding:10px 14px; }
+}
 .nav-row .ic{ width:17px; height:17px; flex:none; }
 .nav-row-label{ flex:1; overflow:hidden; text-overflow:ellipsis; }
 /* dir="rtl" is set on Arabic labels so the text shapes correctly, but the
@@ -689,7 +760,7 @@ body.is-resizing{ cursor:col-resize; user-select:none; }
 }
 
 /* ================= Sticky section headers ================= */
-.section-head{ position:sticky; top:73px; z-index:8; background:#fff; padding:4px 0 2px; margin:-4px 0 6px; }
+.section-head{ position:sticky; top:calc(var(--header-h, 108px) + 8px); z-index:8; background:#fff; padding:4px 0 2px; margin:-4px 0 6px; }
 section.block.tinted .section-head{ background:var(--paper-tint); }
 @media (max-width:900px){ .section-head{ position:static; } }
 
@@ -705,6 +776,11 @@ section.block.tinted .section-head{ background:var(--paper-tint); }
 .page-toc a{ display:block; font-size:12.8px; color:var(--ink-soft); text-decoration:none; padding:6px 0 6px 12px; border-left:2px solid transparent; margin-left:-13px; transition:color .12s ease, border-color .12s ease; }
 .page-toc a:hover{ color:var(--dark-blue); }
 .page-toc a.active{ color:var(--dark-blue); font-weight:700; border-left-color:var(--green-sage); }
+/* RTL entries take the accent on their leading (right) edge so the marker
+   sits beside the text it marks rather than across the column from it. */
+.page-toc a[dir="rtl"]{ border-left:0; border-right:2px solid transparent;
+  padding:6px 12px 6px 0; margin-left:0; margin-right:-13px; }
+.page-toc a[dir="rtl"].active{ border-right-color:var(--green-sage); }
 .content-with-toc{ display:flex; gap:24px; align-items:flex-start; flex:1; min-width:0; }
 .content-main{ min-width:0; flex:1; }
 @media (max-width:1180px){ .page-toc{ display:none !important; } }
@@ -718,7 +794,7 @@ section.block.tinted .section-head{ background:var(--paper-tint); }
 }
 .term-acc-head .acc-chev{ transition:transform .2s ease; flex:none; width:14px; height:14px; }
 .term-acc-head.open .acc-chev{ transform:rotate(90deg); }
-.term-acc-head .acc-count{ margin-left:auto; font-size:11px; font-weight:700; color:var(--powder-blue); background:var(--mint-green); padding:2px 9px; border-radius:999px; }
+.term-acc-head .acc-count{ margin-left:auto; font-size:11px; font-weight:700; color:var(--dark-blue); background:var(--mint-green); padding:2px 9px; border-radius:999px; }
 .term-acc-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .25s ease; }
 .term-acc-body.open{ grid-template-rows:1fr; }
 .term-acc-body-inner{ overflow:hidden; }
@@ -815,6 +891,26 @@ body.editing .struct3-card .struct2-variant-btn{ top:-8px; left:-8px; right:auto
 .user-row select{ border:1px solid var(--line); border-radius:6px; padding:7px; font-size:12.5px; }
 .header-meta{ display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
 .header-meta .user-chip{ margin-top:6px; }
+
+/* Small screens: the header was wrapping the brand to three lines, the admin
+   name to three, and "Sign out" to two — ~180px of chrome before any content.
+   Drop the secondary meta text, keep identity + the controls that matter. */
+@media (max-width:900px){
+  .site-header-inner{ flex-wrap:wrap; padding:10px 16px; row-gap:0; }
+  .brand{ gap:10px; min-width:0; flex:1 1 auto; }
+  .brand-text{ min-width:0; }
+  .brand-text .kicker{ font-size:9.5px; letter-spacing:.1em; }
+  .brand-text .title{ font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .header-meta{ flex-direction:row; align-items:center; gap:8px; flex:none; }
+  .header-meta > strong, .header-meta > span:not(.role-badge){ display:none; }
+  .header-meta .user-chip{ margin-top:0; }
+  .user-chip .uc-info{ display:none; }
+  .uc-logout{ padding:8px 12px; white-space:nowrap; }
+}
+@media (max-width:420px){
+  .brand img{ height:30px; }
+  .brand-text .kicker{ display:none; }
+}
 .login-card .login-logo{ background:var(--dark-blue); padding:12px 20px; border-radius:12px; box-sizing:content-box; }
 
 /* ================= Global visual resizing system ================= */
@@ -850,9 +946,13 @@ body.rk-resizing{ user-select:none; cursor:grabbing; }
 [data-rk][style*="width"]{ overflow-wrap:anywhere; }
 img[data-rk]{ height:auto; }
 
-/* Anything resized collapses back to full width on small screens */
+/* Anything an editor resized collapses back to full width on small screens.
+   Scoped to elements carrying an inline width (which is how applyResizeStyles
+   stores a user's size) — the unscoped version also overrode widths the
+   stylesheet sets deliberately, e.g. flattening the 56px divider rule to the
+   full column width on phones. */
 @media (max-width:760px){
-  [data-rk]{ width:auto !important; min-width:0 !important; }
+  [data-rk][style*="width"]{ width:auto !important; min-width:0 !important; }
   .block-wrap[style*="width"]{ width:100% !important; }
 }
 .rk-parent{
@@ -2598,7 +2698,9 @@ function renderBlockInner(block){
     box.querySelector('[data-bind="__HEADING_EN__"]').setAttribute('data-bind','heading_en');
     box.querySelector('[data-bind="__HEADING_AR__"]').setAttribute('data-bind','heading_ar');
 
-    const PALETTE = ['var(--dark-blue)','var(--sky-blue)','var(--powder-blue)','var(--green-sage)'];
+    // AA-legible members of the brand hues — the plain sage/sky tones fall to
+    // 2.5:1 as small bold text on paper.
+    const PALETTE = ['var(--dark-blue)','var(--sky-deep)','var(--powder-blue)','var(--sage-deep)'];
     const zz = el('div',{class:'zz-timeline'});
     zz.appendChild(el('div',{class:'zz-line'}));
 
@@ -3702,10 +3804,15 @@ function applyRoleToUI(){
   const chip = document.getElementById('user-chip');
   if(currentUser){
     chip.style.display = 'flex';
-    document.getElementById('uc-name').textContent = currentUser.displayName || currentUser.username;
+    const name = currentUser.displayName || currentUser.username;
+    document.getElementById('uc-name').textContent = name;
     const rb = document.getElementById('uc-role');
     rb.textContent = currentUser.role;
     rb.className = 'role-badge ' + currentUser.role;
+    // Don't print the role twice: the stock "Viewer" account rendered as
+    // "Viewer" above a "VIEWER" badge. The badge only earns its place when it
+    // says something the name doesn't.
+    rb.style.display = (name.trim().toLowerCase() === currentUser.role.toLowerCase()) ? 'none' : '';
     document.getElementById('uc-users').style.display = canAdmin() ? '' : 'none';
   } else {
     chip.style.display = 'none';
