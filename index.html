@@ -451,7 +451,13 @@ body.editing .item-controls{ display:inline-flex; }
 .item-mv{ width:20px; height:20px; border:none; border-radius:6px; background:var(--powder-blue); color:#fff; font-size:10.5px; cursor:pointer; line-height:20px; padding:0; }
 .item-mv:hover{ background:var(--dark-blue); }
 .item-mv:disabled{ opacity:.35; cursor:default; }
-table.kb-table td .item-controls{ margin-left:8px; vertical-align:middle; }
+/* Row controls are lifted out of the cell's flow and into a gutter that is
+   reserved in BOTH modes. In flow they grew the last cell's intrinsic width,
+   so entering edit mode recomputed the table's column widths and shifted
+   column 2 by 27px on every row. The cell is already position:relative. */
+table.kb-table td:last-child{ padding-inline-end:74px; }
+table.kb-table td .item-controls{ position:absolute; top:8px; inset-inline-end:30px; margin:0; }
+table.kb-table td .row-del{ position:absolute; top:8px; inset-inline-end:6px; }
 .term-card .item-controls{ position:absolute; top:6px; left:6px; }
 .struct2-box .item-controls{ position:absolute; bottom:-9px; left:50%; transform:translateX(-50%); }
 
@@ -559,6 +565,19 @@ body.editing .canvas-resize{ display:block; }
 .sidebar.collapsed{ flex-basis:60px; width:60px; }
 .sidebar:not(.is-resizing){ transition:flex-basis .22s ease, width .22s ease; }
 .sidebar-scroll{ height:100%; overflow-y:auto; overflow-x:hidden; padding:12px 10px 24px; }
+
+/* ---------------- Rail scrolling ----------------
+   Both rails keep scrolling (they are position:sticky, so a rail taller than
+   the window would strand its lower entries if overflow were removed) but
+   neither shows scrollbar chrome. .has-more is toggled by syncRailOverflow()
+   only while there is content below, and fades the bottom edge so the hidden
+   scroll is still discoverable. */
+.sidebar-scroll, .page-toc{ scrollbar-width:none; -ms-overflow-style:none; }
+.sidebar-scroll::-webkit-scrollbar, .page-toc::-webkit-scrollbar{ width:0; height:0; display:none; }
+.sidebar-scroll.has-more, .page-toc.has-more{
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 34px), transparent 100%);
+          mask-image:linear-gradient(to bottom, #000 calc(100% - 34px), transparent 100%);
+}
 
 /* The collapse control sits in the flow on the same row as the section label,
    so the two share a baseline and the button's right edge lines up with the
@@ -746,6 +765,10 @@ body.is-resizing{ cursor:col-resize; user-select:none; }
 }
 .zz-card:hover{ transform:translateY(-2px); box-shadow:var(--elev-2); }
 .zz-date{ font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-bottom:2px; }
+/* An empty date carries .edit-only, and the blanket body.editing .edit-only
+   rule forces inline-flex — wrong for this block-level div, which put the
+   Arabic and English placeholders side by side instead of stacked. */
+body.editing .zz-date.edit-only{ display:block; }
 .zz-title{ font-weight:700; font-size:15px; color:var(--dark-blue); margin-top:4px; }
 .zz-title[lang="ar"]{ font-family:var(--ff-ar); font-size:15.5px; }
 .zz-desc{ font-size:13px; color:var(--ink-soft); margin-top:4px; }
@@ -836,8 +859,13 @@ section.block.tinted .section-head{ background:var(--paper-tint); }
 .struct3-sub-detail{ font-size:11px; color:var(--ink-soft); margin-top:2px; line-height:1.45; }
 .struct3-sub-ctl{ position:absolute; top:-9px; left:8px; }
 .struct3-addbox{ display:none; }
+/* Wraps onto its own line rather than joining the chip row. As a 70px flex
+   item it took width from the flexible .struct3-subcard chips (flex:1 1 150px),
+   shrinking each by 26px and shifting them up to 52px the moment edit mode
+   opened. On its own line the chips above keep their exact view-mode widths. */
 body.editing .struct3-addbox{
-  display:flex; align-items:center; justify-content:center; flex:0 0 70px;
+  display:flex; align-items:center; justify-content:center;
+  flex:0 0 100%; padding:6px 0; margin-top:2px;
   border:1.5px dashed var(--line); border-radius:9px; color:var(--powder-blue);
   font-size:12px; font-weight:700; cursor:pointer;
 }
@@ -1647,6 +1675,26 @@ function syncHeaderHeight(){
   const h = document.querySelector('.site-header');
   if(!h) return;
   document.documentElement.style.setProperty('--header-h', Math.round(h.getBoundingClientRect().height)+'px');
+}
+
+/* The rails hide their scrollbars, so the only cue that a list continues below
+   is the fade this toggles. CSS can't ask "is this scrollable", hence the
+   class. Cheap enough to run on scroll, resize and every re-render. */
+function syncRailOverflow(){
+  ['.sidebar-scroll', '.page-toc'].forEach(sel=>{
+    const el2 = document.querySelector(sel);
+    if(!el2) return;
+    const more = el2.scrollHeight - el2.clientHeight - el2.scrollTop > 4;
+    el2.classList.toggle('has-more', more);
+  });
+}
+function wireRailOverflow(){
+  ['.sidebar-scroll', '.page-toc'].forEach(sel=>{
+    const el2 = document.querySelector(sel);
+    if(el2) el2.addEventListener('scroll', syncRailOverflow, {passive:true});
+  });
+  window.addEventListener('resize', syncRailOverflow);
+  syncRailOverflow();
 }
 
 function wireRailResizers(){
@@ -3441,6 +3489,8 @@ function renderAll(){
     node.setAttribute('contenteditable', editing ? 'true' : 'false');
   });
   updateDirtyIndicator();
+  // Rail contents change with the page and the chrome language.
+  syncRailOverflow();
 }
 
 /* ---------------- Toolbar actions ---------------- */
@@ -3651,6 +3701,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   applyLayout();
   wireRailResizers();
+  wireRailOverflow();
   syncHeaderHeight();
   if(window.ResizeObserver){
     new ResizeObserver(syncHeaderHeight).observe(document.querySelector('.site-header'));
@@ -3936,7 +3987,18 @@ const RK_EXCLUDE = '.block-controls, .item-controls, .rk-frame, .field-toolbar, 
                    '.struct3-tier-ctl, .zz-controls, .canvas-toolbar, .table-tools, .add-block-zone, ' +
                    '.style-pop, .mini-btn, .bc-btn, .item-mv, .row-del, .chip-del, .struct2-variant-btn, ' +
                    '.struct3-addbox, .canvas-resize, .fg-btn, .field-group-controls, .term-cat-input, ' +
-                   '.qlink-target, .acc-count, .acc-chev, select, input, textarea, svg, path, line, circle, rect, option';
+                   '.qlink-target, .acc-count, .acc-chev, select, input, textarea, svg, path, line, circle, rect, option, ' +
+                   /* Layout furniture, not resize targets. Tagging these meant
+                      body.editing [data-rk]{position:relative} overrode their own
+                      positioning in edit mode:
+                        .zz-dot/.zz-line/.guide-line lost position:absolute and
+                          dropped into the flow, shifting every timeline card 14px;
+                        .section-head lost position:sticky, which activated its
+                          top:calc(header + 8px) as a relative offset and pushed
+                          every block heading ~116px down its own card.
+                      Their editable children keep their own keys — the exclusion
+                      is matched per element, not inherited. */
+                   '.zz-dot, .zz-line, .guide-line, .section-head';
 const RK_TEXTISH = new Set(['P','H1','H2','H3','SPAN','DIV','TD','TH','LI']);
 let rkSelected = null;      // { node, block, key }
 let rkFrame = null;
