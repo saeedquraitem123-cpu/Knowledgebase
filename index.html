@@ -815,6 +815,17 @@ body.editing .zz-date.edit-only{ display:block; }
 .flow-controls{ display:none; gap:5px; margin-top:10px; }
 body.editing .flow-controls{ display:flex; flex-wrap:wrap; }
 
+/* The run follows the reading direction of the chrome language: left-to-right
+   in English-only, right-to-left in Arabic and in EN/AR — matching how the
+   source decks lay the process out in each language. applyLangMode() only
+   stamps .lang-mode-en in English-only mode, so "not English" covers both
+   Arabic and the combined view. Scoped above the stacking breakpoint: once
+   the run is a column it reads top-to-bottom in either language. */
+@media (min-width:861px){
+  body:not(.lang-mode-en) .flow-row{ flex-direction:row-reverse; }
+  body:not(.lang-mode-en) .flow-arrow{ transform:scaleX(-1); }
+}
+
 /* Narrow screens: the run turns into a column and the joins point downward. */
 @media (max-width:860px){
   .flow-row{ flex-direction:column; align-items:stretch; }
