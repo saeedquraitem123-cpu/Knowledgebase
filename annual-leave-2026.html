@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annual Leave 2026 — Al Madallah Healthcare Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================================
+   Al Madallah Healthcare Management — Annual Leave Timeline 2026
+   Design tokens are the same set the SANAD knowledge base uses, so the two
+   documents read as one house style.
+   =========================================================================== */
+:root{
+  --dark-blue:#17314C; --sky-blue:#76A1BA; --powder-blue:#475F7B;
+  --sand-dunes:#D5D0CC; --green-sage:#8CA594; --mint-green:#C4D2C8;
+  --paper:#FBFAF8; --paper-tint:#F3F1EE; --ink:#1C2B36; --ink-soft:#4A5A66;
+  --line:#E1DDD6; --radius:14px; --radius-sm:8px;
+  --ff-en:'Montserrat','Segoe UI',system-ui,sans-serif;
+  --ff-ar:'Tajawal','Segoe UI',system-ui,sans-serif;
+
+  /* Deeper members of the brand hues, for small text and dense fills where
+     the decorative tints fall below AA. */
+  --sage-deep:#5A7561; --sky-deep:#3F6E88;
+  /* The bronze of the Al Madallah mark, carried through as the third team hue
+     and as the accent on interactive edges. */
+  --bronze:#A8814C; --bronze-soft:#D8BE96;
+
+  --state-hover:rgba(23,49,76,0.06);
+  --state-press:rgba(23,49,76,0.12);
+  --focus-ring:0 0 0 3px rgba(140,165,148,0.55);
+  --elev-1:0 1px 2px rgba(23,49,76,0.06);
+  --elev-2:0 1px 2px rgba(23,49,76,0.06), 0 6px 20px rgba(23,49,76,0.07);
+  --elev-3:0 10px 30px rgba(23,49,76,0.14);
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --dur-fast:120ms; --dur:200ms; --ease:cubic-bezier(0.2,0,0,1);
+
+  --danger:#B65454; --danger-bg:#FBEAEA; --danger-ink:#8C3A3A;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:var(--ff-en);background:var(--paper);color:var(--ink);
+     -webkit-font-smoothing:antialiased;padding-bottom:64px;}
+button,input,select{font-family:inherit;}
+:where(button,a,input,select,[tabindex]):focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--radius-sm);}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
+::selection{background:var(--mint-green);color:var(--dark-blue);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+/* ---------- header ---------------------------------------------------- */
+.site-header{position:sticky;top:0;z-index:60;background:var(--dark-blue);color:#fff;
+  border-bottom:1px solid rgba(255,255,255,0.08);}
+.site-header-inner{max-width:1560px;margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;padding:12px 28px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:14px;min-width:0;}
+.brand .logo-chip{background:#fff;border-radius:10px;padding:8px 12px;display:flex;align-items:center;flex:none;}
+.brand .logo-chip img{height:32px;width:auto;display:block;}
+.brand-text{display:flex;flex-direction:column;line-height:1.3;min-width:0;}
+.brand-text .kicker{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mint-green);font-weight:700;}
+.brand-text .title{font-size:15px;font-weight:600;color:#fff;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;}
+.header-right{display:flex;align-items:center;gap:14px;}
+.header-meta{font-size:11.5px;color:var(--sky-blue);text-align:end;line-height:1.5;}
+.header-meta strong{color:#fff;font-weight:700;display:block;font-size:13px;}
+.saved-flag{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  color:var(--mint-green);opacity:0;transition:opacity var(--dur) var(--ease);}
+.saved-flag.on{opacity:1;}
+
+/* ---------- shell ------------------------------------------------------ */
+.wrap{max-width:1560px;margin:0 auto;padding:24px 28px 40px;}
+.hero{background:linear-gradient(155deg,var(--dark-blue) 0%,#1F3E5C 58%,var(--powder-blue) 100%);
+  color:#fff;border-radius:var(--radius);padding:26px 30px;position:relative;overflow:hidden;}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(420px 260px at 88% -10%,rgba(140,165,148,0.35),transparent 60%),
+             radial-gradient(360px 220px at 105% 65%,rgba(168,129,76,0.22),transparent 60%);}
+.hero-row{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  position:relative;z-index:1;flex-wrap:wrap;}
+.hero-eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--mint-green);font-weight:700;margin-bottom:10px;}
+.hero h1{margin:0;font-size:clamp(22px,3vw,31px);font-weight:800;letter-spacing:.01em;}
+.hero .sub{color:#DCE6E0;font-size:14.5px;margin:10px 0 0;max-width:62ch;}
+.hero .sub-ar{font-family:var(--ff-ar);direction:rtl;font-size:15px;color:#C9D8CF;margin-top:4px;}
+.hero-figure{text-align:end;flex:none;}
+.hero-figure .big{font-size:clamp(38px,6vw,56px);font-weight:800;line-height:1;letter-spacing:-.02em;}
+.hero-figure .cap{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mint-green);font-weight:700;margin-top:6px;}
+
+/* ---------- KPI strip -------------------------------------------------- */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;margin-top:18px;box-shadow:var(--elev-1);}
+.kpi{background:#fff;padding:14px 16px;min-width:0;}
+.kpi .v{font-size:25px;font-weight:800;color:var(--dark-blue);line-height:1.1;letter-spacing:-.01em;}
+.kpi .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  color:var(--powder-blue);margin-top:5px;}
+.kpi.alert .v{color:var(--danger-ink);}
+.kpi.alert{background:var(--danger-bg);}
+
+/* ---------- toolbar ---------------------------------------------------- */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 16px;}
+.toolbar .spacer{flex:1 1 auto;}
+.btn{border:1.5px solid var(--line);background:#fff;color:var(--dark-blue);border-radius:999px;
+  padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;
+  align-items:center;gap:7px;transition:background var(--dur-fast) var(--ease),
+  border-color var(--dur-fast) var(--ease),transform var(--dur-fast) var(--ease);}
+.btn:hover{background:var(--state-hover);border-color:var(--green-sage);}
+.btn:active{transform:translateY(1px);background:var(--state-press);}
+.btn.primary{background:var(--dark-blue);color:#fff;border-color:var(--dark-blue);}
+.btn.primary:hover{background:#1F3E5C;}
+.btn.ghost{background:transparent;border-style:dashed;color:var(--powder-blue);}
+.btn.danger{color:var(--danger-ink);border-color:#E7CFCF;}
+.btn.danger:hover{background:var(--danger-bg);border-color:var(--danger);}
+.btn svg{width:15px;height:15px;flex:none;}
+
+.seg{display:inline-flex;background:var(--paper-tint);border:1px solid var(--line);
+  border-radius:999px;padding:3px;gap:2px;}
+.seg button{border:none;background:transparent;color:var(--powder-blue);border-radius:999px;
+  padding:7px 16px;font-size:12.5px;font-weight:700;cursor:pointer;letter-spacing:.02em;}
+.seg button[aria-pressed="true"]{background:var(--dark-blue);color:#fff;}
+.seg button:not([aria-pressed="true"]):hover{background:var(--state-hover);}
+
+.field{display:inline-flex;align-items:center;gap:7px;}
+.field label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;color:var(--powder-blue);}
+select.ctl,input.ctl{padding:8px 12px;border-radius:999px;border:1.5px solid var(--line);
+  background:var(--paper-tint);color:var(--ink);font-size:13px;outline:none;}
+select.ctl:focus,input.ctl:focus{border-color:var(--green-sage);background:#fff;}
+input.search{min-width:210px;}
+
+/* ---------- panels ----------------------------------------------------- */
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px;box-shadow:var(--elev-1);margin-bottom:22px;}
+.panel.tinted{background:var(--paper-tint);}
+.panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;margin-bottom:6px;}
+.panel-head h2{font-size:19px;font-weight:800;color:var(--dark-blue);margin:0;}
+.panel-head .note{font-size:12.5px;color:var(--ink-soft);}
+.rule{height:3px;width:52px;background:var(--green-sage);border-radius:3px;margin:12px 0 18px;}
+.view{display:none;}
+.view.on{display:block;}
+
+/* ---------- month calendar grid --------------------------------------- */
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:14px;}
+.month{border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;overflow:hidden;}
+.month-head{display:flex;align-items:center;justify-content:space-between;
+  background:var(--dark-blue);color:#fff;padding:8px 12px;}
+.month-head .nm{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.month-head .ct{font-size:11px;font-weight:700;color:var(--mint-green);}
+.month-head .ct.zero{color:rgba(255,255,255,.4);}
+.dow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--paper-tint);
+  border-bottom:1px solid var(--line);}
+.dow span{text-align:center;font-size:9.5px;font-weight:800;letter-spacing:.06em;
+  color:var(--powder-blue);padding:6px 0;}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;padding:6px;}
+.day{position:relative;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:var(--ink);border-radius:5px;background:#fff;
+  border:1px solid transparent;cursor:default;transition:transform var(--dur-fast) var(--ease);}
+.day.pad{visibility:hidden;}
+.day.we{background:var(--paper-tint);color:#9AA6AE;}
+.day.has{cursor:pointer;color:#fff;font-weight:700;border-color:rgba(0,0,0,.08);}
+.day.has:hover{transform:scale(1.14);z-index:3;box-shadow:var(--elev-2);}
+.day.has.sel{outline:2px solid var(--dark-blue);outline-offset:1px;z-index:4;}
+.day.today::after{content:"";position:absolute;inset:-2px;border-radius:7px;
+  border:2px dashed var(--bronze);pointer-events:none;}
+.day .n{position:absolute;bottom:1px;right:2px;font-size:8px;font-weight:800;
+  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5);line-height:1;}
+.day.clash{box-shadow:inset 0 0 0 2px var(--danger);}
+
+/* ---------- timeline (gantt) ------------------------------------------ */
+.tl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;}
+.tl{min-width:1180px;}
+.tl-row{display:grid;grid-template-columns:186px 1fr;align-items:stretch;
+  border-bottom:1px solid var(--line);}
+.tl-row:last-child{border-bottom:none;}
+.tl-row.group{background:var(--dark-blue);color:#fff;position:sticky;top:0;z-index:2;}
+.tl-row.group .tl-name{font-size:11px;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:#fff;border-right-color:rgba(255,255,255,.14);}
+.tl-row.head{background:var(--paper-tint);position:sticky;top:0;z-index:3;}
+.tl-name{padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--ink);
+  border-right:1px solid var(--line);display:flex;align-items:center;gap:8px;
+  position:sticky;left:0;background:inherit;z-index:1;}
+.tl-row:not(.group):not(.head) .tl-name{background:#fff;}
+.tl-row:nth-of-type(even):not(.group):not(.head) .tl-name{background:var(--paper-tint);}
+.tl-row:nth-of-type(even):not(.group):not(.head) .tl-track{background-color:var(--paper-tint);}
+.tl-name .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+.tl-name .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tl-name .dys{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--powder-blue);}
+.tl-track{position:relative;height:26px;}
+.tl-months{display:grid;height:22px;}
+.tl-months span{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--powder-blue);display:flex;align-items:center;justify-content:center;}
+/* Weekend banding and month rules are painted, not built from 365 nodes per
+   row — the same picture for a fraction of the DOM. */
+.tl-track{background-image:var(--we-bands),var(--month-rules);background-repeat:repeat,no-repeat;}
+.tl-months{background-image:var(--month-rules);background-repeat:no-repeat;}
+.tl-bar{position:absolute;top:5px;height:16px;border-radius:4px;cursor:pointer;
+  display:flex;align-items:center;padding:0 5px;overflow:hidden;
+  font-size:9.5px;font-weight:800;color:#fff;white-space:nowrap;
+  box-shadow:0 1px 2px rgba(23,49,76,.2);}
+.tl-bar:hover{filter:brightness(1.12);}
+.tl-bar.clash{box-shadow:0 0 0 2px var(--danger);}
+.tl-today{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--bronze);z-index:2;}
+
+/* ---------- legend ----------------------------------------------------- */
+.legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.lg{display:inline-flex;align-items:center;gap:7px;font-size:12.3px;font-weight:600;
+  color:var(--powder-blue);background:var(--paper-tint);border:1px solid var(--line);
+  border-radius:999px;padding:6px 12px;}
+.lg .sw{width:13px;height:13px;border-radius:4px;flex:none;border:1px solid rgba(0,0,0,.08);}
+.lg.off{opacity:.42;}
+button.lg{cursor:pointer;}
+button.lg:hover{border-color:var(--green-sage);}
+
+/* ---------- day detail panel ------------------------------------------ */
+.detail{border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--paper-tint);
+  padding:14px 16px;margin-top:16px;min-height:66px;}
+.detail .d-date{font-size:13px;font-weight:800;color:var(--dark-blue);}
+.detail .d-hint{font-size:12.5px;color:var(--ink-soft);}
+.detail ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.detail li{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink);}
+.detail li .sw{width:10px;height:10px;border-radius:50%;flex:none;}
+.detail li em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--powder-blue);}
+.detail .warn{margin-top:10px;font-size:12.3px;font-weight:700;color:var(--danger-ink);
+  background:var(--danger-bg);border-radius:var(--radius-sm);padding:8px 12px;display:inline-block;}
+
+/* ---------- tables ----------------------------------------------------- */
+.table-wrap{overflow-x:auto;border-radius:var(--radius-sm);border:1px solid var(--line);}
+table.al-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:820px;}
+table.al-table th{text-align:start;background:var(--dark-blue);color:#fff;font-weight:700;
+  padding:10px 12px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;}
+table.al-table td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:middle;}
+table.al-table tbody tr:nth-child(even){background:var(--paper-tint);}
+table.al-table tbody tr:hover{background:var(--mint-green);}
+table.al-table tbody tr.clash td:first-child{box-shadow:inset 3px 0 0 var(--danger);}
+table.al-table td.num{font-weight:800;color:var(--dark-blue);text-align:end;white-space:nowrap;}
+table.al-table select,table.al-table input{width:100%;border:1px solid transparent;background:transparent;
+  border-radius:6px;padding:6px 8px;font-size:13px;color:var(--ink);outline:none;}
+table.al-table select:hover,table.al-table input:hover{border-color:var(--line);background:#fff;}
+table.al-table select:focus,table.al-table input:focus{border-color:var(--green-sage);background:#fff;}
+table.al-table input[type=date]{min-width:136px;}
+.x-btn{background:transparent;color:var(--danger);border:1px solid transparent;border-radius:6px;
+  width:24px;height:24px;font-size:14px;line-height:1;cursor:pointer;font-weight:700;}
+.x-btn:hover{background:var(--danger-bg);border-color:#E7CFCF;}
+.tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;background:var(--mint-green);color:var(--dark-blue);}
+.tag.clash{background:var(--danger-bg);color:var(--danger-ink);}
+.empty-note{font-size:13px;color:var(--ink-soft);padding:16px;text-align:center;}
+
+/* ---------- conflicts -------------------------------------------------- */
+.clash-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+.clash-card{border:1px solid #E7CFCF;border-left:4px solid var(--danger);border-radius:var(--radius-sm);
+  background:#fff;padding:12px 14px;}
+.clash-card .when{font-size:12.5px;font-weight:800;color:var(--danger-ink);}
+.clash-card .who{font-size:12.5px;color:var(--ink);margin-top:5px;line-height:1.7;}
+.clash-card .team{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--powder-blue);margin-top:6px;}
+.ok-note{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;color:var(--sage-deep);
+  background:#EAF2ED;border-radius:var(--radius-sm);padding:12px 14px;}
+
+/* ---------- dialog ----------------------------------------------------- */
+dialog.sheet{border:none;border-radius:var(--radius);padding:0;max-width:440px;width:calc(100% - 32px);
+  box-shadow:var(--elev-3);color:var(--ink);}
+dialog.sheet::backdrop{background:rgba(23,49,76,.45);}
+dialog.sheet .dh{background:var(--dark-blue);color:#fff;padding:14px 20px;font-size:14.5px;font-weight:700;}
+dialog.sheet .db{padding:20px;display:grid;gap:14px;}
+dialog.sheet .df{display:grid;gap:5px;}
+dialog.sheet .df label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:800;color:var(--powder-blue);}
+dialog.sheet .df input,dialog.sheet .df select{padding:10px 12px;border-radius:var(--radius-sm);
+  border:1.5px solid var(--line);background:var(--paper-tint);font-size:13.5px;color:var(--ink);outline:none;}
+dialog.sheet .df input:focus,dialog.sheet .df select:focus{border-color:var(--green-sage);background:#fff;}
+dialog.sheet .dfoot{display:flex;justify-content:flex-end;gap:9px;padding:0 20px 20px;}
+dialog.sheet .err{font-size:12.3px;font-weight:700;color:var(--danger-ink);background:var(--danger-bg);
+  border-radius:var(--radius-sm);padding:9px 12px;display:none;}
+dialog.sheet .err.on{display:block;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ---------- toast + footer -------------------------------------------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);
+  background:var(--dark-blue);color:#fff;border-radius:999px;padding:11px 22px;font-size:13px;
+  font-weight:600;box-shadow:var(--elev-3);opacity:0;pointer-events:none;z-index:90;
+  transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease);}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.site-footer{background:var(--dark-blue);color:var(--sky-blue);padding:22px 28px;text-align:center;
+  font-size:12.5px;line-height:1.8;}
+.site-footer strong{color:#fff;}
+
+/* ---------- responsive ------------------------------------------------- */
+@media (max-width:900px){
+  .wrap{padding:18px 16px 32px;}
+  .site-header-inner{padding:10px 16px;}
+  .hero{padding:22px 20px;}
+  .months{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));}
+  .header-meta{display:none;}
+}
+@media (max-width:560px){
+  .months{grid-template-columns:1fr;}
+  /* An odd number of KPIs leaves the grid's own background showing in the
+     last slot; let the final tile take the whole row instead. */
+  .kpis .kpi:last-child{grid-column:1 / -1;}
+  .toolbar .spacer{display:none;}
+  input.search{min-width:0;width:100%;}
+}
+
+/* ---------- print ------------------------------------------------------ */
+@media print{
+  @page{size:A4 landscape;margin:10mm;}
+  body{background:#fff;padding:0;}
+  .toolbar,.site-footer .noprint,.x-btn,.saved-flag,dialog,.toast{display:none !important;}
+  .site-header{position:static;}
+  .panel{break-inside:avoid;box-shadow:none;}
+  .month{break-inside:avoid;}
+  .view{display:block !important;}
+  .tl-scroll{overflow:visible;}
+  .day.has,.tl-bar,.kpi,table.al-table th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="brand">
+      <span class="logo-chip"><img id="brand-logo" alt="Al Madallah Healthcare Management"></span>
+      <span class="brand-text">
+        <span class="kicker">Workforce Planning</span>
+        <span class="title">Annual Leave Timeline</span>
+      </span>
+    </div>
+    <div class="header-right">
+      <span class="saved-flag" id="saved-flag">Saved</span>
+      <div class="header-meta">
+        <strong id="hdr-year">2026</strong>
+        Insurance &amp; Enaya Teams
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-row">
+      <div>
+        <div class="hero-eyebrow">Al Madallah Healthcare Management</div>
+        <h1>Annual Leave <span id="hero-year">2026</span> — Daily Timeline</h1>
+        <p class="sub">Approved annual leave, parental leave and offsets for the Insurance,
+          Enaya and Off-liner teams. Click any coloured day to see who is out; edit the
+          entries below and every view updates.</p>
+        <p class="sub sub-ar" lang="ar">الإجازات السنوية لفرق التأمين وعناية — الجدول الزمني اليومي</p>
+      </div>
+      <div class="hero-figure">
+        <div class="big" id="hero-total">0</div>
+        <div class="cap">Total leave days</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="View">
+      <button id="tab-cal" aria-pressed="true">Calendar</button>
+      <button id="tab-tl" aria-pressed="false">Timeline</button>
+    </div>
+    <div class="field">
+      <label for="f-team">Team</label>
+      <select class="ctl" id="f-team"><option value="">All teams</option></select>
+    </div>
+    <div class="field">
+      <label class="sr-only" for="f-search">Search member</label>
+      <input class="ctl search" id="f-search" type="search" placeholder="Search a team member…">
+    </div>
+    <span class="spacer"></span>
+    <button class="btn primary" id="btn-add-leave">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+      Add leave</button>
+    <button class="btn" id="btn-add-member">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+      Add member</button>
+    <button class="btn" id="btn-export">Export JSON</button>
+    <button class="btn" id="btn-import">Import JSON</button>
+    <button class="btn" id="btn-print">Print</button>
+    <button class="btn danger" id="btn-reset">Reset to plan</button>
+    <input type="file" id="file-import" accept="application/json,.json" hidden>
+  </div>
+
+  <!-- ===================== CALENDAR VIEW ===================== -->
+  <section class="panel view on" id="view-cal">
+    <div class="panel-head">
+      <h2>Year at a glance</h2>
+      <span class="note" id="cal-note"></span>
+    </div>
+    <div class="rule"></div>
+    <div class="months" id="months"></div>
+    <div class="detail" id="detail">
+      <span class="d-hint">Select a coloured day to see who is on leave.</span>
+    </div>
+  </section>
+
+  <!-- ===================== TIMELINE VIEW ===================== -->
+  <section class="panel view" id="view-tl">
+    <div class="panel-head">
+      <h2>Daily timeline</h2>
+      <span class="note">One row per team member across the whole year — scroll sideways.</span>
+    </div>
+    <div class="rule"></div>
+    <div class="tl-scroll" id="tl-scroll"><div class="tl" id="tl"></div></div>
+  </section>
+
+  <!-- ===================== LEGEND ===================== -->
+  <section class="panel tinted">
+    <div class="panel-head">
+      <h2>Legend</h2>
+      <span class="note">Click a team to show or hide it.</span>
+    </div>
+    <div class="rule"></div>
+    <div class="legend" id="legend-teams"></div>
+    <div class="legend" id="legend-types" style="margin-top:10px"></div>
+  </section>
+
+  <!-- ===================== CONFLICTS ===================== -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Coverage conflicts</h2>
+      <span class="note">Days when two or more members of the same team are away.
+        Parental leave is excluded.</span>
+    </div>
+    <div class="rule"></div>
+    <div id="clashes"></div>
+  </section>
+
+  <!-- ===================== ENTRIES ===================== -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Leave entries</h2>
+      <span class="note"><span id="entry-count">0</span> entries — edit any field directly.</span>
+    </div>
+    <div class="rule"></div>
+    <div class="table-wrap">
+      <table class="al-table">
+        <thead><tr>
+          <th style="width:24%">Team member</th>
+          <th style="width:14%">Team</th>
+          <th style="width:14%">Type</th>
+          <th style="width:17%">From</th>
+          <th style="width:17%">To</th>
+          <th style="width:8%;text-align:end">Days</th>
+          <th style="width:6%"><span class="sr-only">Remove</span></th>
+        </tr></thead>
+        <tbody id="entries-body"></tbody>
+      </table>
+    </div>
+    <p class="empty-note" id="entries-empty" hidden>No leave entries match the current filter.</p>
+  </section>
+
+  <!-- ===================== ROSTER ===================== -->
+  <section class="panel tinted">
+    <div class="panel-head">
+      <h2>Team roster</h2>
+      <span class="note"><span id="member-count">0</span> members — remove a member to drop their leave too.</span>
+    </div>
+    <div class="rule"></div>
+    <div class="table-wrap">
+      <table class="al-table" style="min-width:620px">
+        <thead><tr>
+          <th style="width:38%">Name</th>
+          <th style="width:26%">Team</th>
+          <th style="width:16%;text-align:end">Leave days</th>
+          <th style="width:14%">Status</th>
+          <th style="width:6%"><span class="sr-only">Remove</span></th>
+        </tr></thead>
+        <tbody id="roster-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<dialog class="sheet" id="dlg-leave">
+  <form method="dialog">
+    <div class="dh">Add leave</div>
+    <div class="db">
+      <div class="err" id="leave-err"></div>
+      <div class="df">
+        <label for="lv-member">Team member</label>
+        <select id="lv-member"></select>
+      </div>
+      <div class="df">
+        <label for="lv-type">Leave type</label>
+        <select id="lv-type"></select>
+      </div>
+      <div class="two">
+        <div class="df"><label for="lv-from">From</label><input type="date" id="lv-from"></div>
+        <div class="df"><label for="lv-to">To</label><input type="date" id="lv-to"></div>
+      </div>
+    </div>
+    <div class="dfoot">
+      <button class="btn" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn primary" id="lv-save" value="save" type="button">Add leave</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="sheet" id="dlg-member">
+  <form method="dialog">
+    <div class="dh">Add team member</div>
+    <div class="db">
+      <div class="err" id="member-err"></div>
+      <div class="df">
+        <label for="mb-name">Full name</label>
+        <input type="text" id="mb-name" placeholder="e.g. Layla Al Marzooqi" autocomplete="off">
+      </div>
+      <div class="df">
+        <label for="mb-team">Team</label>
+        <select id="mb-team"></select>
+      </div>
+    </div>
+    <div class="dfoot">
+      <button class="btn" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn primary" id="mb-save" value="save" type="button">Add member</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<footer class="site-footer">
+  <strong>Al Madallah Healthcare Management</strong> — Annual Leave <span id="foot-year">2026</span><br>
+  <span class="noprint">Changes are saved in this browser automatically. Use Export JSON to share the plan.</span>
+</footer>
+
+<script>
+"use strict";
+/* ===========================================================================
+   Al Madallah — Annual Leave Timeline
+   A single-file planner. Everything below drives four views off one array of
+   leave entries, so an edit in the table redraws the calendar, the timeline,
+   the KPIs and the conflict list in the same pass.
+   =========================================================================== */
+
+const LOGO = "data:image/png;base64,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";
+document.getElementById('brand-logo').src = LOGO;
+
+const TEAMS = [
+  { id:'ena', name:'Enaya Team',      color:'#5A7561' },
+  { id:'ins', name:'Insurance Team',  color:'#3F6E88' },
+  { id:'off', name:'Off-liners',      color:'#A8814C' }
+];
+const TYPES = [
+  { id:'AL',  name:'Annual Leave',   short:'AL',  counts:true,  clash:true  },
+  { id:'PL',  name:'Parental Leave', short:'PL',  counts:true,  clash:false },
+  { id:'OFF', name:'Offset',         short:'OFF', counts:true,  clash:true  },
+  { id:'WO',  name:'Week Off',       short:'WO',  counts:false, clash:false },
+  { id:'UPL', name:'Unpaid Leave',   short:'UPL', counts:false, clash:true  }
+];
+const PARENTAL_COLOR = '#4A5A66';
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+const STORE_KEY = 'almadallah.annual-leave';
+
+const BASELINE = {"year":2026,"members":[{"id":"m01","name":"Shahad Mohammed (TL)","team":"ena"},{"id":"m02","name":"Amna Yousef","team":"ena"},{"id":"m03","name":"Mohammed Faris","team":"ena"},{"id":"m04","name":"Rashed Ajlan","team":"ena"},{"id":"m05","name":"Hadeel Dafallah","team":"ena"},{"id":"m06","name":"Mayada","team":"ena"},{"id":"m07","name":"Saif Bouziani","team":"ena"},{"id":"m08","name":"Juma","team":"ena"},{"id":"m09","name":"Jamal","team":"ena"},{"id":"m10","name":"Hassan","team":"ena"},{"id":"m11","name":"Adnan","team":"ena"},{"id":"m12","name":"Ghanayem","team":"ena"},{"id":"m13","name":"Badr","team":"ena"},{"id":"m14","name":"Saud","team":"ena"},{"id":"m15","name":"Abdullah","team":"ena"},{"id":"m16","name":"Saeed Mohamed (TL)","team":"ins"},{"id":"m17","name":"Mohamed Elsayed","team":"ins"},{"id":"m18","name":"Hammad","team":"ins"},{"id":"m19","name":"Aakash","team":"ins"},{"id":"m20","name":"Haseeb Akram","team":"ins"},{"id":"m21","name":"Bibu James","team":"ins"},{"id":"m22","name":"Mark Crisogono","team":"ins"},{"id":"m23","name":"Chetan Nishad","team":"ins"},{"id":"m24","name":"Mahmoud Isaac","team":"ins"},{"id":"m25","name":"Marielle Posecion","team":"ins"},{"id":"m26","name":"Ali Yahia","team":"ins"},{"id":"m27","name":"Zainab","team":"ins"},{"id":"m28","name":"Shamsddin","team":"ins"},{"id":"m29","name":"Samira","team":"off"},{"id":"m30","name":"Reem","team":"off"},{"id":"m31","name":"Mark","team":"off"},{"id":"m32","name":"Nadeem","team":"off"},{"id":"m33","name":"Said","team":"off"}],"entries":[{"id":"e001","member":"m01","type":"AL","from":"2026-10-01","to":"2026-11-30"},{"id":"e002","member":"m02","type":"AL","from":"2026-01-04","to":"2026-01-08"},{"id":"e003","member":"m02","type":"AL","from":"2026-03-02","to":"2026-03-20"},{"id":"e004","member":"m02","type":"AL","from":"2026-05-18","to":"2026-05-26"},{"id":"e005","member":"m04","type":"AL","from":"2026-04-01","to":"2026-04-30"},{"id":"e006","member":"m05","type":"AL","from":"2026-07-13","to":"2026-08-11"},{"id":"e007","member":"m06","type":"AL","from":"2026-07-06","to":"2026-07-31"},{"id":"e008","member":"m07","type":"OFF","from":"2026-06-09","to":"2026-06-09"},{"id":"e009","member":"m07","type":"AL","from":"2026-06-19","to":"2026-06-30"},{"id":"e010","member":"m12","type":"PL","from":"2026-07-18","to":"2026-08-18"},{"id":"e011","member":"m14","type":"AL","from":"2026-11-24","to":"2026-12-20"},{"id":"e012","member":"m16","type":"AL","from":"2026-08-10","to":"2026-09-01"},{"id":"e013","member":"m17","type":"AL","from":"2026-02-23","to":"2026-03-13"},{"id":"e014","member":"m18","type":"OFF","from":"2026-08-26","to":"2026-08-26"},{"id":"e015","member":"m18","type":"AL","from":"2026-08-29","to":"2026-08-29"},{"id":"e016","member":"m18","type":"OFF","from":"2026-09-17","to":"2026-09-17"},{"id":"e017","member":"m18","type":"WO","from":"2026-09-19","to":"2026-09-19"},{"id":"e018","member":"m18","type":"OFF","from":"2026-09-21","to":"2026-09-21"},{"id":"e019","member":"m18","type":"UPL","from":"2026-09-25","to":"2026-09-25"},{"id":"e020","member":"m19","type":"AL","from":"2026-04-30","to":"2026-05-13"},{"id":"e021","member":"m20","type":"AL","from":"2026-05-25","to":"2026-06-26"},{"id":"e022","member":"m21","type":"AL","from":"2026-06-22","to":"2026-07-24"},{"id":"e023","member":"m22","type":"AL","from":"2026-07-24","to":"2026-08-14"},{"id":"e024","member":"m23","type":"AL","from":"2026-08-08","to":"2026-08-21"},{"id":"e025","member":"m24","type":"AL","from":"2026-08-15","to":"2026-09-02"},{"id":"e026","member":"m25","type":"AL","from":"2026-10-15","to":"2026-11-14"},{"id":"e027","member":"m26","type":"AL","from":"2026-12-09","to":"2026-12-31"},{"id":"e028","member":"m29","type":"AL","from":"2026-12-15","to":"2026-12-31"},{"id":"e029","member":"m30","type":"AL","from":"2026-07-15","to":"2026-08-01"},{"id":"e030","member":"m31","type":"AL","from":"2026-12-21","to":"2026-12-31"},{"id":"e031","member":"m32","type":"AL","from":"2026-12-07","to":"2026-12-31"},{"id":"e032","member":"m33","type":"AL","from":"2026-06-08","to":"2026-07-08"}]};
+
+/* ---------------------------------------------------------------- helpers */
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const clone = o => JSON.parse(JSON.stringify(o));
+const team = id => TEAMS.find(t => t.id === id) || TEAMS[0];
+const type = id => TYPES.find(t => t.id === id) || TYPES[0];
+const esc  = s => String(s).replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* Dates are handled as plain Y-M-D so nothing shifts across time zones. */
+const iso = d => d.getFullYear() + '-' +
+  String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+const parse = s => { const [y,m,d] = String(s).split('-').map(Number); return new Date(y, m-1, d); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const spanDays = (a, b) => Math.round((parse(b) - parse(a)) / 86400000) + 1;
+const isWeekend = d => { const w = d.getDay(); return w === 0 || w === 6; };
+const pretty = s => parse(s).toLocaleDateString('en-GB',
+  { day:'numeric', month:'short', year:'numeric' });
+
+/* Entry colour: the member's team, except parental leave which has its own
+   neutral so it never reads as an approved annual-leave block. */
+function entryColor(e, m){ return e.type === 'PL' ? PARENTAL_COLOR : team(m.team).color; }
+
+/* ------------------------------------------------------------------ state */
+let state   = null;
+let view    = 'cal';
+let filters = { team:'', q:'', hidden:new Set() };
+let selected = null;          // selected calendar day, ISO
+let saveTimer = null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){
+      const p = JSON.parse(raw);
+      if(p && Array.isArray(p.members) && Array.isArray(p.entries)) return p;
+    }
+  }catch(err){ /* corrupt or blocked storage falls back to the shipped plan */ }
+  return clone(BASELINE);
+}
+function save(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    const f = $('#saved-flag');
+    f.classList.add('on');
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => f.classList.remove('on'), 1400);
+  }catch(err){ /* private mode: the session still works, it just will not persist */ }
+}
+function nextId(prefix, list){
+  let n = 1;
+  const used = new Set(list.map(x => x.id));
+  while(used.has(prefix + String(n).padStart(3,'0'))) n++;
+  return prefix + String(n).padStart(3,'0');
+}
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 2200);
+}
+
+/* --------------------------------------------------------------- deriving */
+/* One pass builds the day index every view reads from:
+   dayMap: ISO date -> [{ member, entry }]                                   */
+let dayMap = new Map();
+let memberDays = new Map();     // member id -> counted leave days
+let clashRanges = [];
+let clashDates = new Set();
+
+function memberVisible(m){
+  if(filters.hidden.has(m.team)) return false;
+  if(filters.team && m.team !== filters.team) return false;
+  if(filters.q && !m.name.toLowerCase().includes(filters.q)) return false;
+  return true;
+}
+
+function rebuild(){
+  dayMap = new Map();
+  memberDays = new Map();
+  const byId = new Map(state.members.map(m => [m.id, m]));
+
+  for(const e of state.entries){
+    const m = byId.get(e.member);
+    if(!m) continue;
+    if(!e.from || !e.to) continue;
+    let a = parse(e.from), b = parse(e.to);
+    if(b < a) { const t = a; a = b; b = t; }
+    if(spanDays(iso(a), iso(b)) > 400) continue;   // guard against a typo'd year
+    for(let d = new Date(a); d <= b; d = addDays(d, 1)){
+      const key = iso(d);
+      if(!dayMap.has(key)) dayMap.set(key, []);
+      dayMap.get(key).push({ member:m, entry:e });
+    }
+    if(type(e.type).counts){
+      memberDays.set(m.id, (memberDays.get(m.id) || 0) + spanDays(iso(a), iso(b)));
+    }
+  }
+
+  /* A conflict is two or more people from the same team out on the same day,
+     which is exactly what the source plan flagged in red. */
+  const clashDays = [];
+  clashDates = new Set();
+  for(const [key, list] of dayMap){
+    const visible = list.filter(x => memberVisible(x.member) && type(x.entry.type).clash);
+    const perTeam = new Map();
+    for(const x of visible){
+      if(!perTeam.has(x.member.team)) perTeam.set(x.member.team, []);
+      perTeam.get(x.member.team).push(x.member);
+    }
+    for(const [tid, people] of perTeam){
+      const uniq = Array.from(new Set(people.map(p => p.id)));
+      if(uniq.length > 1){
+        clashDays.push({ date:key, team:tid, people:uniq.map(id => byId.get(id)) });
+        clashDates.add(key);
+      }
+    }
+  }
+
+  /* Collapse consecutive clash days into ranges. Days are grouped by the exact
+     set of people first, so an unrelated conflict falling inside a run — two
+     Insurance members clashing mid-way through an Enaya clash — no longer
+     splits that run in two. */
+  const bySig = new Map();
+  for(const c of clashDays){
+    const sig = c.team + '|' + c.people.map(p => p.id).sort().join(',');
+    if(!bySig.has(sig)) bySig.set(sig, { sig, team:c.team, people:c.people, dates:[] });
+    bySig.get(sig).dates.push(c.date);
+  }
+  clashRanges = [];
+  for(const g of bySig.values()){
+    g.dates.sort();
+    let run = null;
+    for(const d of g.dates){
+      if(run && spanDays(run.to, d) === 2){ run.to = d; run.days++; continue; }
+      run = { sig:g.sig, team:g.team, people:g.people, from:d, to:d, days:1 };
+      clashRanges.push(run);
+    }
+  }
+  clashRanges.sort((a, b) => a.from < b.from ? -1 : a.from > b.from ? 1 : 0);
+}
+
+/* Everyone out on a given day, honouring the current filters. */
+function outOn(key){
+  return (dayMap.get(key) || []).filter(x => memberVisible(x.member));
+}
+function clashOn(key){
+  const list = outOn(key).filter(x => type(x.entry.type).clash);
+  const per = new Map();
+  for(const x of list) per.set(x.member.team, (per.get(x.member.team) || new Set()).add(x.member.id));
+  for(const [, ids] of per) if(ids.size > 1) return true;
+  return false;
+}
+
+/* ------------------------------------------------------------------- KPIs */
+function renderKpis(){
+  const year = state.year;
+  const visibleMembers = state.members.filter(memberVisible);
+  const onLeave = new Set();
+  let totalDays = 0, workingDays = 0, alDays = 0, coveredDays = 0, maxOut = 0;
+
+  for(const [key, list] of dayMap){
+    if(!key.startsWith(year)) continue;
+    const vis = list.filter(x => memberVisible(x.member));
+    if(!vis.length) continue;
+    coveredDays++;
+    const ids = new Set(vis.map(x => x.member.id));
+    maxOut = Math.max(maxOut, ids.size);
+    for(const x of vis){
+      onLeave.add(x.member.id);
+      if(!type(x.entry.type).counts) continue;
+      totalDays++;
+      if(x.entry.type === 'AL') alDays++;
+      if(!isWeekend(parse(key))) workingDays++;
+    }
+  }
+  const clashDayCount = clashDates.size;
+
+  const cells = [
+    { v:visibleMembers.length,  k:'Team members' },
+    { v:onLeave.size,           k:'Members on leave' },
+    { v:state.entries.filter(e => { const m = state.members.find(x => x.id === e.member);
+                                    return m && memberVisible(m); }).length, k:'Leave blocks' },
+    { v:alDays,                 k:'Annual leave days' },
+    { v:totalDays,              k:'Total leave days' },
+    { v:workingDays,            k:'Working days out' },
+    { v:coveredDays,            k:'Days covered' },
+    { v:clashDayCount,          k:'Conflict days', alert:clashDayCount > 0 },
+    { v:maxOut,                 k:'Max concurrent' }
+  ];
+  $('#kpis').innerHTML = cells.map(c =>
+    `<div class="kpi${c.alert ? ' alert' : ''}"><div class="v">${c.v}</div><div class="k">${c.k}</div></div>`
+  ).join('');
+  $('#hero-total').textContent = totalDays;
+}
+
+/* --------------------------------------------------------------- calendar */
+function renderCalendar(){
+  const year = Number(state.year);
+  const todayIso = iso(new Date());
+  const out = [];
+
+  for(let mi = 0; mi < 12; mi++){
+    const first = new Date(year, mi, 1);
+    const lastDay = new Date(year, mi + 1, 0).getDate();
+    const lead = (first.getDay() + 6) % 7;     // week starts Monday
+    let monthDays = 0;
+    const cells = [];
+
+    for(let i = 0; i < lead; i++) cells.push('<span class="day pad"></span>');
+
+    for(let d = 1; d <= lastDay; d++){
+      const date = new Date(year, mi, d);
+      const key  = iso(date);
+      const list = outOn(key);
+      const cls  = ['day'];
+      let style = '', badge = '', label = '';
+
+      if(isWeekend(date)) cls.push('we');
+      if(key === todayIso) cls.push('today');
+
+      if(list.length){
+        monthDays += list.length;
+        cls.push('has');
+        const colors = Array.from(new Set(list.map(x => entryColor(x.entry, x.member))));
+        style = colors.length === 1
+          ? `background:${colors[0]};`
+          : `background:linear-gradient(135deg,${colors.map((c, i) =>
+              `${c} ${Math.round(i * 100 / colors.length)}%,${c} ${Math.round((i+1) * 100 / colors.length)}%`
+            ).join(',')});`;
+        if(list.length > 1) badge = `<span class="n">${list.length}</span>`;
+        if(clashOn(key)) cls.push('clash');
+        if(key === selected) cls.push('sel');
+        label = `${list.length} away on ${pretty(key)}`;
+      }
+      cells.push(
+        `<${list.length ? 'button type="button"' : 'span'} class="${cls.join(' ')}" style="${style}"` +
+        (list.length ? ` data-day="${key}" aria-label="${esc(label)}"` : '') +
+        `>${d}${badge}</${list.length ? 'button' : 'span'}>`
+      );
+    }
+
+    out.push(
+      `<div class="month">
+         <div class="month-head">
+           <span class="nm">${MONTHS[mi]}</span>
+           <span class="ct${monthDays ? '' : ' zero'}" title="Person-days of leave in ${MONTHS[mi]}">${monthDays ? monthDays + 'd' : '—'}</span>
+         </div>
+         <div class="dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+         <div class="days">${cells.join('')}</div>
+       </div>`);
+  }
+  $('#months').innerHTML = out.join('');
+
+  const covered = Array.from(dayMap.keys()).filter(k => outOn(k).length).length;
+  $('#cal-note').textContent = covered
+    ? `${covered} day${covered === 1 ? '' : 's'} of the year have someone away.`
+    : 'No leave booked for the current filter.';
+  renderDetail();
+}
+
+function renderDetail(){
+  const box = $('#detail');
+  if(!selected){
+    box.innerHTML = '<span class="d-hint">Select a coloured day to see who is on leave.</span>';
+    return;
+  }
+  const list = outOn(selected);
+  if(!list.length){
+    selected = null;
+    return renderDetail();
+  }
+  const items = list
+    .slice()
+    .sort((a, b) => a.member.name.localeCompare(b.member.name))
+    .map(x => `<li><span class="sw" style="background:${entryColor(x.entry, x.member)}"></span>
+        ${esc(x.member.name)} <em>${esc(type(x.entry.type).short)} · ${esc(team(x.member.team).name)}</em></li>`)
+    .join('');
+  const warn = clashOn(selected)
+    ? '<div class="warn">Two or more members of the same team are away on this day.</div>' : '';
+  box.innerHTML = `<div class="d-date">${pretty(selected)} — ${list.length} away</div>
+     <ul>${items}</ul>${warn}`;
+}
+
+/* --------------------------------------------------------------- timeline */
+function renderTimeline(){
+  const year = Number(state.year);
+  const jan1 = new Date(year, 0, 1);
+  const total = (new Date(year + 1, 0, 1) - jan1) / 86400000;   // 365 or 366
+  const pct = n => (n * 100 / total) + '%';
+
+  /* Weekend bands repeat on a true 7-day period, offset to wherever the first
+     Saturday of the year falls, so they stay aligned to 31 December. */
+  const dayW = 100 / total;
+  const wk = (7 * dayW).toFixed(4);                  // one week, as a % of the track
+  const firstSat = (6 - jan1.getDay() + 7) % 7;      // 0-6: where Saturday first lands
+  const WE = 'rgba(23,49,76,.05)';
+  const at = n => (n * dayW).toFixed(4);
+  /* The repeat period is exactly one week, so the bands stay locked to real
+     Saturdays all the way to 31 December. When the year opens on a Sunday the
+     weekend straddles the period edge and needs both halves. */
+  const stopList = firstSat <= 5
+    ? `transparent 0 ${at(firstSat)}%,${WE} ${at(firstSat)}% ${at(firstSat + 2)}%,` +
+      `transparent ${at(firstSat + 2)}% ${wk}%`
+    : `${WE} 0 ${at(1)}%,transparent ${at(1)}% ${at(6)}%,${WE} ${at(6)}% ${wk}%`;
+  const weBands = `repeating-linear-gradient(90deg,${stopList})`;
+
+  /* One rule at each month boundary. */
+  let acc = 0;
+  const stops = [];
+  for(let i = 0; i < 12; i++){
+    const at = (acc * dayW).toFixed(4);
+    if(i) stops.push(`transparent ${at}%,var(--line) ${at}%,var(--line) calc(${at}% + 1px),transparent calc(${at}% + 1px)`);
+    acc += new Date(year, i + 1, 0).getDate();
+  }
+  const monthRules = `linear-gradient(90deg,${stops.join(',')})`;
+  const trackVars = `--we-bands:${weBands};--month-rules:${monthRules};`;
+
+  /* Month ruler, sized by each month's real length. */
+  const monthCols = MONTHS.map((_, i) => new Date(year, i + 1, 0).getDate() + 'fr').join(' ');
+  const ruler = `<div class="tl-row head">
+      <div class="tl-name">Team member</div>
+      <div class="tl-months" style="grid-template-columns:${monthCols};--month-rules:${monthRules}">
+        ${MONTHS.map(m => `<span>${m.slice(0,3)}</span>`).join('')}
+      </div></div>`;
+
+  const todayIso = iso(new Date());
+  const todayMark = todayIso.startsWith(String(year))
+    ? `<div class="tl-today" style="left:${pct((parse(todayIso) - jan1) / 86400000)}"></div>` : '';
+
+  const rows = [ruler];
+  for(const t of TEAMS){
+    const members = state.members.filter(m => m.team === t.id && memberVisible(m));
+    if(!members.length) continue;
+    rows.push(`<div class="tl-row group">
+        <div class="tl-name">${esc(t.name)}</div>
+        <div class="tl-track"></div></div>`);
+
+    for(const m of members){
+      const bars = state.entries
+        .filter(e => e.member === m.id && e.from && e.to)
+        .map(e => {
+          let a = parse(e.from), b = parse(e.to);
+          if(b < a){ const s = a; a = b; b = s; }
+          const offset = (a - jan1) / 86400000;
+          const len = (b - a) / 86400000 + 1;
+          if(offset + len < 0 || offset > total) return '';        // outside the plan year
+          const from = Math.max(0, offset);
+          const width = Math.min(total, offset + len) - from;
+          const clash = clashRanges.some(r => r.people.some(p => p.id === m.id) &&
+                        !(r.to < e.from || r.from > e.to));
+          const label = len > 12 ? `${type(e.type).short} · ${len}d` : (len > 5 ? type(e.type).short : '');
+          return `<button type="button" class="tl-bar${clash ? ' clash' : ''}"
+              style="left:${pct(from)};width:${pct(width)};background:${entryColor(e, m)}"
+              data-entry="${e.id}" data-day="${e.from}"
+              title="${esc(m.name)} — ${esc(type(e.type).name)}: ${pretty(e.from)} → ${pretty(e.to)} (${len} days)"
+              >${label}</button>`;
+        }).join('');
+
+      const days = memberDays.get(m.id) || 0;
+      rows.push(`<div class="tl-row">
+          <div class="tl-name">
+            <span class="dot" style="background:${t.color}"></span>
+            <span class="nm" title="${esc(m.name)}">${esc(m.name)}</span>
+            <span class="dys">${days || ''}</span>
+          </div>
+          <div class="tl-track" style="${trackVars}">${todayMark}${bars}</div>
+        </div>`);
+    }
+  }
+  if(rows.length === 1) rows.push('<div class="empty-note" style="padding:22px">No members match the current filter.</div>');
+  $('#tl').innerHTML = rows.join('');
+}
+
+/* ----------------------------------------------------------------- legend */
+function renderLegend(){
+  $('#legend-teams').innerHTML = TEAMS.map(t => {
+    const n = state.members.filter(m => m.team === t.id).length;
+    const off = filters.hidden.has(t.id);
+    return `<button type="button" class="lg${off ? ' off' : ''}" data-team="${t.id}"
+        aria-pressed="${!off}">
+        <span class="sw" style="background:${t.color}"></span>${esc(t.name)} · ${n}</button>`;
+  }).join('');
+
+  $('#legend-types').innerHTML =
+    TYPES.map(t => `<span class="lg"><span class="sw" style="background:${
+      t.id === 'PL' ? PARENTAL_COLOR : 'var(--sand-dunes)'}"></span>${t.short} — ${t.name}</span>`).join('') +
+    `<span class="lg"><span class="sw" style="background:var(--paper-tint);border-color:var(--line)"></span>Weekend</span>` +
+    `<span class="lg"><span class="sw" style="background:#fff;box-shadow:inset 0 0 0 2px var(--danger)"></span>Same-team conflict</span>`;
+}
+
+/* -------------------------------------------------------------- conflicts */
+function renderClashes(){
+  const box = $('#clashes');
+  if(!clashRanges.length){
+    box.innerHTML = `<div class="ok-note">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4">
+        <path d="M20 6 9 17l-5-5"/></svg>
+      No two members of the same team are away at the same time.</div>`;
+    return;
+  }
+  box.innerHTML = '<div class="clash-list">' + clashRanges.map(r => {
+    const when = r.from === r.to ? pretty(r.from) : `${pretty(r.from)} → ${pretty(r.to)}`;
+    return `<div class="clash-card">
+        <div class="when">${when} <span class="tag clash">${r.days}d</span></div>
+        <div class="who">${r.people.map(p => esc(p.name)).join(' · ')}</div>
+        <div class="team">${esc(team(r.team).name)}</div>
+      </div>`;
+  }).join('') + '</div>';
+}
+
+/* ------------------------------------------------------------ tables */
+function memberOptions(sel){
+  return state.members
+    .slice()
+    .sort((a, b) => a.team.localeCompare(b.team) || a.name.localeCompare(b.name))
+    .map(m => `<option value="${m.id}"${m.id === sel ? ' selected' : ''}>${esc(m.name)}</option>`)
+    .join('');
+}
+function typeOptions(sel){
+  return TYPES.map(t => `<option value="${t.id}"${t.id === sel ? ' selected' : ''}>${esc(t.name)}</option>`).join('');
+}
+function teamOptions(sel){
+  return TEAMS.map(t => `<option value="${t.id}"${t.id === sel ? ' selected' : ''}>${esc(t.name)}</option>`).join('');
+}
+
+function renderEntries(){
+  const byId = new Map(state.members.map(m => [m.id, m]));
+  const rows = state.entries
+    .filter(e => { const m = byId.get(e.member); return m && memberVisible(m); })
+    .sort((a, b) => (a.from || '').localeCompare(b.from || ''));
+
+  $('#entry-count').textContent = rows.length;
+  $('#entries-empty').hidden = rows.length > 0;
+
+  $('#entries-body').innerHTML = rows.map(e => {
+    const m = byId.get(e.member);
+    const days = (e.from && e.to) ? Math.max(1, spanDays(e.from, e.to)) : 0;
+    const clash = clashRanges.some(r => r.people.some(p => p.id === m.id) &&
+                  !(r.to < e.from || r.from > e.to));
+    return `<tr${clash ? ' class="clash"' : ''} data-entry="${e.id}">
+      <td><select data-f="member">${memberOptions(e.member)}</select></td>
+      <td><span class="tag" style="background:${team(m.team).color};color:#fff">${esc(team(m.team).name)}</span></td>
+      <td><select data-f="type">${typeOptions(e.type)}</select></td>
+      <td><input type="date" data-f="from" value="${esc(e.from || '')}"></td>
+      <td><input type="date" data-f="to" value="${esc(e.to || '')}"></td>
+      <td class="num">${days}</td>
+      <td><button type="button" class="x-btn" data-del-entry="${e.id}"
+          aria-label="Remove leave for ${esc(m.name)}">&times;</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderRoster(){
+  const rows = state.members.filter(memberVisible);
+  $('#member-count').textContent = state.members.length;
+  $('#roster-body').innerHTML = rows.map(m => {
+    const days = memberDays.get(m.id) || 0;
+    return `<tr data-member="${m.id}">
+      <td><input type="text" data-f="name" value="${esc(m.name)}"></td>
+      <td><select data-f="team">${teamOptions(m.team)}</select></td>
+      <td class="num">${days || '—'}</td>
+      <td>${days ? '<span class="tag">Booked</span>'
+                 : '<span class="tag" style="background:var(--paper-tint);color:var(--powder-blue)">No leave</span>'}</td>
+      <td><button type="button" class="x-btn" data-del-member="${m.id}"
+          aria-label="Remove ${esc(m.name)}">&times;</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ------------------------------------------------------------ full render */
+function render(){
+  rebuild();
+  renderKpis();
+  if(view === 'cal') renderCalendar(); else renderTimeline();
+  renderLegend();
+  renderClashes();
+  renderEntries();
+  renderRoster();
+  $('#hero-year').textContent = state.year;
+  $('#hdr-year').textContent  = state.year;
+  $('#foot-year').textContent = state.year;
+}
+
+/* ----------------------------------------------------------------- events */
+$('#tab-cal').addEventListener('click', () => setView('cal'));
+$('#tab-tl').addEventListener('click',  () => setView('tl'));
+function setView(v){
+  view = v;
+  $('#tab-cal').setAttribute('aria-pressed', String(v === 'cal'));
+  $('#tab-tl').setAttribute('aria-pressed',  String(v === 'tl'));
+  $('#view-cal').classList.toggle('on', v === 'cal');
+  $('#view-tl').classList.toggle('on',  v === 'tl');
+  if(v === 'cal') renderCalendar(); else renderTimeline();
+}
+
+$('#f-team').addEventListener('change', e => { filters.team = e.target.value; render(); });
+$('#f-search').addEventListener('input', e => {
+  filters.q = e.target.value.trim().toLowerCase();
+  render();
+});
+
+$('#legend-teams').addEventListener('click', e => {
+  const b = e.target.closest('[data-team]');
+  if(!b) return;
+  const id = b.dataset.team;
+  if(filters.hidden.has(id)) filters.hidden.delete(id); else filters.hidden.add(id);
+  render();
+});
+
+$('#months').addEventListener('click', e => {
+  const b = e.target.closest('[data-day]');
+  if(!b) return;
+  selected = (selected === b.dataset.day) ? null : b.dataset.day;
+  renderCalendar();
+  if(selected) $('#detail').scrollIntoView({ block:'nearest', behavior:'smooth' });
+});
+
+$('#tl').addEventListener('click', e => {
+  const b = e.target.closest('[data-day]');
+  if(!b) return;
+  selected = b.dataset.day;
+  setView('cal');
+  $('#detail').scrollIntoView({ block:'center', behavior:'smooth' });
+});
+
+/* ------------------------------------------------- inline table editing */
+$('#entries-body').addEventListener('change', e => {
+  const f = e.target.dataset.f;
+  const tr = e.target.closest('[data-entry]');
+  if(!f || !tr) return;
+  const entry = state.entries.find(x => x.id === tr.dataset.entry);
+  if(!entry) return;
+
+  if((f === 'from' || f === 'to') && !e.target.value){
+    e.target.value = entry[f] || '';
+    toast('A leave block needs both dates.');
+    return;
+  }
+  entry[f] = e.target.value;
+  if(entry.from && entry.to && entry.to < entry.from){
+    const s = entry.from; entry.from = entry.to; entry.to = s;   // keep the range forward
+    toast('Dates were the wrong way round — swapped.');
+  }
+  save(); render();
+});
+$('#entries-body').addEventListener('click', e => {
+  const b = e.target.closest('[data-del-entry]');
+  if(!b) return;
+  state.entries = state.entries.filter(x => x.id !== b.dataset.delEntry);
+  save(); render(); toast('Leave block removed.');
+});
+
+$('#roster-body').addEventListener('change', e => {
+  const f = e.target.dataset.f;
+  const tr = e.target.closest('[data-member]');
+  if(!f || !tr) return;
+  const m = state.members.find(x => x.id === tr.dataset.member);
+  if(!m) return;
+  const v = e.target.value.trim();
+  if(f === 'name' && !v){ e.target.value = m.name; return; }
+  m[f] = f === 'name' ? v : e.target.value;
+  save(); render();
+});
+$('#roster-body').addEventListener('click', e => {
+  const b = e.target.closest('[data-del-member]');
+  if(!b) return;
+  const m = state.members.find(x => x.id === b.dataset.delMember);
+  const n = state.entries.filter(x => x.member === m.id).length;
+  const msg = n ? `Remove ${m.name} and their ${n} leave block${n === 1 ? '' : 's'}?`
+                : `Remove ${m.name}?`;
+  if(!confirm(msg)) return;
+  state.members = state.members.filter(x => x.id !== m.id);
+  state.entries = state.entries.filter(x => x.member !== m.id);
+  save(); render(); toast(`${m.name} removed.`);
+});
+
+/* ------------------------------------------------------------- dialogs */
+const dlgLeave = $('#dlg-leave'), dlgMember = $('#dlg-member');
+
+$('#btn-add-leave').addEventListener('click', () => {
+  if(!state.members.length) return toast('Add a team member first.');
+  $('#lv-member').innerHTML = memberOptions(state.members[0].id);
+  $('#lv-type').innerHTML = typeOptions('AL');
+  const start = `${state.year}-01-01`;
+  $('#lv-from').value = start; $('#lv-to').value = start;
+  $('#lv-from').min = $('#lv-to').min = `${state.year}-01-01`;
+  $('#lv-from').max = $('#lv-to').max = `${state.year}-12-31`;
+  $('#leave-err').classList.remove('on');
+  dlgLeave.showModal();
+});
+$('#lv-save').addEventListener('click', () => {
+  const member = $('#lv-member').value;
+  const t = $('#lv-type').value;
+  let from = $('#lv-from').value, to = $('#lv-to').value;
+  const err = $('#leave-err');
+  if(!member || !from || !to){
+    err.textContent = 'Pick a member and both dates.'; err.classList.add('on'); return;
+  }
+  if(to < from){ const s = from; from = to; to = s; }
+  state.entries.push({ id:nextId('e', state.entries), member, type:t, from, to });
+  save(); render(); dlgLeave.close();
+  toast(`Added ${spanDays(from, to)} day${spanDays(from, to) === 1 ? '' : 's'} of leave.`);
+});
+
+$('#btn-add-member').addEventListener('click', () => {
+  $('#mb-name').value = '';
+  $('#mb-team').innerHTML = teamOptions(TEAMS[0].id);
+  $('#member-err').classList.remove('on');
+  dlgMember.showModal();
+  setTimeout(() => $('#mb-name').focus(), 30);
+});
+$('#mb-save').addEventListener('click', () => {
+  const name = $('#mb-name').value.trim();
+  const err = $('#member-err');
+  if(!name){ err.textContent = 'A name is required.'; err.classList.add('on'); return; }
+  if(state.members.some(m => m.name.toLowerCase() === name.toLowerCase())){
+    err.textContent = 'That name is already on the roster.'; err.classList.add('on'); return;
+  }
+  state.members.push({ id:nextId('m', state.members), name, team:$('#mb-team').value });
+  save(); render(); dlgMember.close(); toast(`${name} added.`);
+});
+
+/* ------------------------------------------------------- import / export */
+$('#btn-export').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `almadallah-annual-leave-${state.year}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast('Plan exported.');
+});
+$('#btn-import').addEventListener('click', () => $('#file-import').click());
+$('#file-import').addEventListener('change', e => {
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const p = JSON.parse(reader.result);
+      if(!p || !Array.isArray(p.members) || !Array.isArray(p.entries))
+        throw new Error('missing members or entries');
+      state = { year:p.year || state.year, members:p.members, entries:p.entries };
+      selected = null;
+      save(); render(); toast('Plan imported.');
+    }catch(err){
+      toast('That file is not a valid leave plan.');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+$('#btn-print').addEventListener('click', () => window.print());
+$('#btn-reset').addEventListener('click', () => {
+  if(!confirm('Discard all edits and restore the original 2026 plan?')) return;
+  state = clone(BASELINE);
+  selected = null;
+  filters = { team:'', q:'', hidden:new Set() };
+  $('#f-team').value = ''; $('#f-search').value = '';
+  save(); render(); toast('Original plan restored.');
+});
+
+/* ------------------------------------------------------------------ boot */
+function boot(){
+  state = load();
+  $('#f-team').innerHTML = '<option value="">All teams</option>' + teamOptions('');
+  $('#f-team').value = '';
+  render();
+}
+boot();
+</script>
+</body>
+</html>
